@@ -9,9 +9,10 @@ namespace AlphaFleet.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Class { get; set; }
-        public ShipRarity Rarity { get; set; }
         public int ShipProductionYear { get; set; }
+        public ShipRarity Rarity { get; set; }
         public ShipHullClass ShipHullClass { get; set; }
+        public bool IsAvailable { get; set; }
         public string ImageUrl { get; set; }
         public bool IsAvaible { get; set; }
         public Guid FleetID { get; set; }
