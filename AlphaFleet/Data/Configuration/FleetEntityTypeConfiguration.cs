@@ -7,7 +7,7 @@ namespace AlphaFleet.Data.Configuration
     public class FleetEntityTypeConfiguration : IEntityTypeConfiguration<Fleet>
     {
         // Seed data defined at the type level so it's not recreated on every Configure call
-        private static readonly Fleet[] SeedFleets = new[]
+        private readonly Fleet[] SeedFleets = new[]
         {
             new Fleet { Id = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"), Name = "Alpha Fleet", Location = "Sol System" },
             new Fleet { Id = new Guid("4241c74f-092c-4249-b731-954fb7658830"), Name = "Beta Squadron", Location = "Orion Outpost" },

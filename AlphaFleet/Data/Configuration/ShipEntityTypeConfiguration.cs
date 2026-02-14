@@ -8,7 +8,7 @@ namespace AlphaFleet.Data.Configuration
     public class ShipEntityTypeConfiguratuion : IEntityTypeConfiguration<Ship>
     {
         // Seed data defined once at type level so it's not recreated every time Configure is called.
-        private static readonly Ship[] SeedShips = new[]
+        private readonly Ship[] SeedShips = new[]
         {
             new Ship { Id = 1, Name = "Vanguard", Class = "Interceptor", ShipProductionYear = 2225, ShipHullClass = ShipHullClass.Interceptor, Rarity = ShipRarity.Common, IsAvailable = true },
             new Ship { Id = 2, Name = "Corsair", Class = "Fighter", ShipProductionYear = 2228, ShipHullClass = ShipHullClass.Fighter, Rarity = ShipRarity.Rare, IsAvailable = true },

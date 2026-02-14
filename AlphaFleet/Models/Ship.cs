@@ -12,9 +12,9 @@ namespace AlphaFleet.Models
         [Required]
         [MinLength(ShipNameMinLength)]
         [MaxLength(ShipNameMaxLength)]
-        public string Name { get; set; }
+        public string Name { get; set; } =null!;
         [Required]
-        public string Class { get; set; }
+        public string Class { get; set; } = null!;
         [Required]
         public ShipRarity Rarity { get; set; }
         [Required]
@@ -22,13 +22,11 @@ namespace AlphaFleet.Models
         public int ShipProductionYear { get; set; }
         [Required]
         public ShipHullClass ShipHullClass { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Fleet))]
         public Guid FleetId { get; set; }
         public bool IsAvailable { get; set; }
-        public virtual Fleet Fleet { get; set; }
-
-
+        public virtual Fleet Fleet { get; set; } = null!;
     }
 }

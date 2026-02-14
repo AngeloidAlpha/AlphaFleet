@@ -83,7 +83,7 @@ namespace AlphaFleet.Data.Migrations
 
                     b.HasIndex("FleetId");
 
-                    b.ToTable("Ships");
+                    b.ToTable("Ships", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
