@@ -18,8 +18,9 @@ namespace AlphaFleet.Controllers
         }
         public IActionResult Index()
         {
-            Fleet[] allFleet = _context
+            Fleet[] allFleets = _context
                 .Fleets
+                .Include(f => f.Ships)
                 .AsNoTracking()
                 .ToArray();
             return this.Json(allFleets);

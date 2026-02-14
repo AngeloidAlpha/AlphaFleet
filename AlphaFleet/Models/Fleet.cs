@@ -15,5 +15,6 @@ namespace AlphaFleet.Models
         [MinLength(FleetLocationNameMinLength)]
         [MaxLength(FleetLocationNameMaxLength)]
         public string Location { get; set; } = null!;
+        public virtual ICollection<Ship> Ships { get; set; } = new HashSet<Ship>();
     }
 }
