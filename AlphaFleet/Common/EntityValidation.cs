@@ -5,8 +5,6 @@
         /* Ships */
         public const int ShipNameMinLength = 3;
         public const int ShipNameMaxLength = 100;
-        public const int ShipTypeMinLength = 3;
-        public const int ShipTypeMaxLength = 50;
         public const int ShipDescriptionMinLength = 10;
         public const int ShipDescriptionMaxLength = 5000;
         public const int ShipProductionYearMinValue = 2200;
