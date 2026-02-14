@@ -12,6 +12,6 @@
         Heavy_Cruiser,
         Battlecruiser,
         Capital_Ship,
-        Carrier,
+        AircraftCarrier,
     }
 }
