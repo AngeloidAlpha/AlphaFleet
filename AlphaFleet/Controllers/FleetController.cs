@@ -21,6 +21,7 @@ namespace AlphaFleet.Controllers
             Fleet[] allFleets = _context
                 .Fleets
                 .Include(f => f.Ships)
+                .AsSplitQuery()
                 .AsNoTracking()
                 .ToArray();
             return this.Json(allFleets);

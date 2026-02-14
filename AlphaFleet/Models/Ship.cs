@@ -2,6 +2,7 @@
 using static AlphaFleet.Common.EntityValidation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AlphaFleet.Models
 {
@@ -27,6 +28,7 @@ namespace AlphaFleet.Models
         [ForeignKey(nameof(Fleet))]
         public Guid FleetId { get; set; }
         public bool IsAvailable { get; set; }
+        [JsonIgnore]
         public virtual Fleet Fleet { get; set; } = null!;
     }
 }
