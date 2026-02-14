@@ -4,6 +4,7 @@ using AlphaFleet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaFleet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260214085254_AddRarityToShips")]
+    partial class AddRarityToShips
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +31,9 @@ namespace AlphaFleet.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("FleetId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -39,6 +45,8 @@ namespace AlphaFleet.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FleetId");
 
                     b.ToTable("Fleets");
                 });
@@ -288,6 +296,13 @@ namespace AlphaFleet.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AlphaFleet.Models.Fleet", b =>
+                {
+                    b.HasOne("AlphaFleet.Models.Fleet", null)
+                        .WithMany("Fleets")
+                        .HasForeignKey("FleetId");
+                });
+
             modelBuilder.Entity("AlphaFleet.Models.Ship", b =>
                 {
                     b.HasOne("AlphaFleet.Models.Fleet", "Fleet")
@@ -348,6 +363,11 @@ namespace AlphaFleet.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AlphaFleet.Models.Fleet", b =>
+                {
+                    b.Navigation("Fleets");
                 });
 #pragma warning restore 612, 618
         }

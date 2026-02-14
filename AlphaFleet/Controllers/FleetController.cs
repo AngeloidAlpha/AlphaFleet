@@ -22,7 +22,7 @@ namespace AlphaFleet.Controllers
                 .Fleets
                 .AsNoTracking()
                 .ToArray();
-            return this.Json(allFleet);
+            return this.Json(allFleets);
         }
     }
 }
