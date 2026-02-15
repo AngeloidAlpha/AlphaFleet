@@ -38,7 +38,7 @@ namespace AlphaFleet.Controllers
                 .FirstOrDefault(f => f.Id == id);
             if (fleet == null)
             {
-                return this.NotFound();
+                return this.View("BadRequest");
             }
             return this.View(fleet);
         }
