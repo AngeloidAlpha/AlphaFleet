@@ -1,0 +1,13 @@
+@model AlphaFleet.Models.Fleet
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <partial name="_FleetDetails" model="Model" />
+
+    <a class="btn btn-secondary mt-3" asp-controller="Fleet" asp-action="Index">← Back to All Fleets</a>
+</div>
