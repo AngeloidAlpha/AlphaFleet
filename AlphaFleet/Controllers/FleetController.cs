@@ -16,6 +16,7 @@ namespace AlphaFleet.Controllers
             /* Store the injected instance in a local field */
             _context = dbContext;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             Fleet[] allFleets = _context
@@ -24,7 +25,22 @@ namespace AlphaFleet.Controllers
                 .AsSplitQuery()
                 .AsNoTracking()
                 .ToArray();
-            return this.Json(allFleets);
+            return this.View(allFleets);
+        }
+        [HttpGet]
+        public IActionResult Details(Guid id)
+        {
+            Fleet? fleet = _context
+                .Fleets
+                .Include(f => f.Ships)
+                .AsSplitQuery()
+                .AsNoTracking()
+                .FirstOrDefault(f => f.Id == id);
+            if (fleet == null)
+            {
+                return this.NotFound();
+            }
+            return this.View(fleet);
         }
     }
 }
