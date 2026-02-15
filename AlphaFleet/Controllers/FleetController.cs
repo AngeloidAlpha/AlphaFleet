@@ -19,7 +19,7 @@ namespace AlphaFleet.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            Fleet[] allFleets = _context
+            IEnumerable<Fleet> allFleets = _context
                 .Fleets
                 .Include(f => f.Ships)
                 .AsSplitQuery()
