@@ -7,10 +7,29 @@
 <div class="container mt-5">
     <h1 class="mb-4">@ViewData["Title"]</h1>
 
+    <form asp-controller="Ship" asp-action="Index" method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or class..."
+                   value="@ViewData["CurrentSearch"]" />
+            <button type="submit" class="btn btn-primary">🔍 Search</button>
+            @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+            {
+                <a asp-controller="Ship" asp-action="Index" class="btn btn-outline-secondary">✕ Clear</a>
+            }
+        </div>
+    </form>
+
     @if (Model == null || !Model.Any())
     {
         <div class="alert alert-info" role="alert">
-            No ships found.
+            @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+            {
+                <span>No ships found matching "<strong>@ViewData["CurrentSearch"]</strong>".</span>
+            }
+            else
+            {
+                <span>No ships found.</span>
+            }
         </div>
     }
     else
@@ -22,9 +41,10 @@
                         <th>Image</th>
                         <th>Name</th>
                         <th>Class</th>
-                        <th>Rarity</th>
                         <th>Hull Class</th>
+                        <th>Rarity</th>
                         <th>Production Year</th>
+                        <th>Fleet</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -48,13 +68,18 @@
                                 </a>
                             </td>
                             <td>@ship.Class</td>
+                            <td>@ship.ShipHullClass</td>
                             <td>
                                 <span class="badge bg-@GetRarityColor(ship.Rarity)">
                                     @ship.Rarity
                                 </span>
                             </td>
-                            <td>@ship.ShipHullClass</td>
                             <td>@ship.ShipProductionYear</td>
+                            <td>
+                                <a asp-controller="Fleet" asp-action="Details" asp-route-id="@ship.FleetId">
+                                    @ship.Fleet.Name
+                                </a>
+                            </td>
                             <td>
                                 @if (ship.IsAvailable)
                                 {

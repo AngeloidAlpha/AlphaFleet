@@ -17,12 +17,12 @@ namespace AlphaFleet.Models
         [Required]
         public string Class { get; set; } = null!;
         [Required]
+        public ShipHullClass ShipHullClass { get; set; }
+        [Required]
         public ShipRarity Rarity { get; set; }
         [Required]
         [Range(ShipProductionYearMinValue, ShipProductionYearMaxValue, ErrorMessage = "Production year must be {1} before {2}.")]
         public int ShipProductionYear { get; set; }
-        [Required]
-        public ShipHullClass ShipHullClass { get; set; }
         public string ImageUrl { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Fleet))]

@@ -16,22 +16,34 @@ namespace AlphaFleet.Controllers
             _context = dbContext;
         }
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Index(string? search)
         {
-            IEnumerable<Ship> allShips = _context
+            IQueryable<Ship> query = _context
                 .Ships
-                .AsNoTracking()
+                .Include(s => s.Fleet)
+                .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                string searchTerm = search.Trim().ToLower();
+                query = query.Where(s =>
+                    s.Name.ToLower().Contains(searchTerm) ||
                     s.Class.ToLower().Contains(searchTerm));
+            }
+
+            IEnumerable<Ship> allShips = query
                 .OrderBy(s => s.Name)
                 .ThenBy(s => s.ShipHullClass)
                 .ThenBy(s => s.Rarity)
-                .ThenByDescending(s => s.IsAvailable) 
-                .ThenByDescending (s => s.ShipProductionYear)
+                .ThenByDescending(s => s.IsAvailable)
+                .ThenByDescending(s => s.ShipProductionYear)
                 .ToArray();
+
+            ViewData["CurrentSearch"] = search;
             return this.View(allShips);
         }
         [HttpGet]
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             Ship? ship = _context
                 .Ships
