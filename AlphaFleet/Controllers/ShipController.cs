@@ -15,6 +15,7 @@ namespace AlphaFleet.Controllers
             /* Store the injected instance in a local field */
             _context = dbContext;
         }
+        [HttpGet]
         public ActionResult Index()
         {
             IEnumerable<Ship> allShips = _context
@@ -27,6 +28,20 @@ namespace AlphaFleet.Controllers
                 .ThenByDescending (s => s.ShipProductionYear)
                 .ToArray();
             return this.View(allShips);
+        }
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            Ship? ship = _context
+                .Ships
+                .Include(s => s.Fleet)
+                .AsNoTracking()
+                .SingleOrDefault(s => s.Id == id);
+            if (ship == null)
+            {
+                return this.View("BadRequest");
+            }
+            return this.View(ship);
         }
     }
 }

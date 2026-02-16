@@ -42,7 +42,11 @@
                                     <span class="text-muted">—</span>
                                 }
                             </td>
-                            <td><strong>@ship.Name</strong></td>
+                            <td>
+                                <a asp-controller="Ship" asp-action="Details" asp-route-id="@ship.Id">
+                                    <strong>@ship.Name</strong>
+                                </a>
+                            </td>
                             <td>@ship.Class</td>
                             <td>
                                 <span class="badge bg-@GetRarityColor(ship.Rarity)">

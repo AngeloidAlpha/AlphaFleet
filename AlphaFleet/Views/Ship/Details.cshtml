@@ -1,0 +1,77 @@
+﻿@model AlphaFleet.Models.Ship
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="row g-0">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 300px;" />
+                </div>
+            }
+            <div class="col-md-@(string.IsNullOrEmpty(Model.ImageUrl) ? "12" : "8")">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8"><strong>@Model.Name</strong></dd>
+
+                        <dt class="col-sm-4">Class</dt>
+                        <dd class="col-sm-8">@Model.Class</dd>
+
+                        <dt class="col-sm-4">Rarity</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-@GetRarityColor(Model.Rarity)">@Model.Rarity</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Hull Class</dt>
+                        <dd class="col-sm-8">@Model.ShipHullClass</dd>
+
+                        <dt class="col-sm-4">Production Year</dt>
+                        <dd class="col-sm-8">@Model.ShipProductionYear</dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.IsAvailable)
+                            {
+                                <span class="badge bg-success">Available</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Unavailable</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Fleet</dt>
+                        <dd class="col-sm-8">
+                            <a asp-controller="Fleet" asp-action="Details" asp-route-id="@Model.FleetId">
+                                @Model.Fleet.Name
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-secondary mt-3" asp-controller="Ship" asp-action="Index">← Back to All Ships</a>
+</div>
+
+@functions {
+    private string GetRarityColor(AlphaFleet.Models.Enums.ShipRarity rarity)
+    {
+        return rarity switch
+        {
+            AlphaFleet.Models.Enums.ShipRarity.Common => "secondary",
+            AlphaFleet.Models.Enums.ShipRarity.Rare => "info",
+            AlphaFleet.Models.Enums.ShipRarity.Epic => "warning",
+            AlphaFleet.Models.Enums.ShipRarity.Legendary => "danger",
+            _ => "dark"
+        };
+    }
+}
