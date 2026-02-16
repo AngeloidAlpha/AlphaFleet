@@ -21,6 +21,7 @@ namespace AlphaFleet.Controllers
             IEnumerable<Ship> allShips = _context
                 .Ships
                 .AsNoTracking()
+                    s.Class.ToLower().Contains(searchTerm));
                 .OrderBy(s => s.Name)
                 .ThenBy(s => s.ShipHullClass)
                 .ThenBy(s => s.Rarity)
