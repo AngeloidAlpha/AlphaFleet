@@ -17,7 +17,6 @@ namespace AlphaFleet.Models.ViewModels
         [Required]
         public ShipHullClass ShipHullClass { get; set; }
 
-        [Required]
         public ShipRarity Rarity { get; set; }
 
         [Required]

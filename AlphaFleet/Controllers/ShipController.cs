@@ -1,20 +1,25 @@
 ﻿using AlphaFleet.Data;
 using AlphaFleet.Models;
 using AlphaFleet.Models.ViewModels;
+using AlphaFleet.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlphaFleet.Controllers
 {
+    [Authorize]
     public class ShipController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly GachaService _gachaService;
         /* Constructor Injection - Most commonly used */
         /* Pattern to remember: Register in Collection then Consume */
-        public ShipController(ApplicationDbContext dbContext)
+        public ShipController(ApplicationDbContext dbContext, GachaService gachaService)
         {
             /* Store the injected instance in a local field */
             _context = dbContext;
+            _gachaService = gachaService;
         }
         [HttpGet]
         public IActionResult Index(string? search)
@@ -72,6 +77,14 @@ namespace AlphaFleet.Controllers
             };
             return this.View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RollRarity()
+        {
+            var rarity = _gachaService.RollRarity();
+            return Json(new { rarity = rarity.ToString(), value = (int)rarity });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(ShipFormViewModel model)

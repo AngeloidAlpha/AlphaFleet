@@ -9,9 +9,9 @@
         Frigate,
         Destroyer,
         Cruiser,
-        Heavy_Cruiser,
+        HeavyCruiser,
         Battlecruiser,
-        Capital_Ship,
+        CapitalShip,
         AircraftCarrier,
     }
 }

@@ -18,6 +18,21 @@ namespace AlphaFleet.Services
         {
             _shipService = shipService;
         }
+        public ShipRarity RollRarity()
+        {
+            double roll = _random.NextDouble() * 100;
+            double cumulativeProbability = 0;
+            foreach (var rarity in _rarityProbabilities)
+            {
+                cumulativeProbability += rarity.Value;
+                if (roll < cumulativeProbability)
+                {
+                    return rarity.Key;
+                }
+            }
+            return ShipRarity.Common;
+        }
+
         public Ship PullShip()
         {
             double roll = _random.NextDouble() * 100;

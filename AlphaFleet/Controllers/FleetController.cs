@@ -1,11 +1,13 @@
 ﻿using AlphaFleet.Data;
 using AlphaFleet.Data.Configuration;
 using AlphaFleet.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlphaFleet.Controllers
 {
+    [Authorize]
     public class FleetController : Controller
     {
         private readonly ApplicationDbContext _context;
