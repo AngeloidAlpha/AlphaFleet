@@ -117,5 +117,93 @@ namespace AlphaFleet.Controllers
 
             return RedirectToAction("Details", new { id = ship.Id });
         }
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            Ship? ship = _context.Ships.Find(id);
+            if (ship == null)
+            {
+                return this.View("BadRequest");
+            }
+
+            var model = new ShipFormViewModel
+            {
+                Name = ship.Name,
+                Class = ship.Class,
+                ShipHullClass = ship.ShipHullClass,
+                Rarity = ship.Rarity,
+                ShipProductionYear = ship.ShipProductionYear,
+                ImageUrl = ship.ImageUrl,
+                History = ship.History,
+                FleetId = ship.FleetId,
+                IsAvailable = ship.IsAvailable,
+                Fleets = _context.Fleets.AsNoTracking().OrderBy(f => f.Name).ToList()
+            };
+
+            ViewData["ShipId"] = id;
+            return this.View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Guid id, ShipFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Fleets = _context.Fleets.AsNoTracking().OrderBy(f => f.Name).ToList();
+                ViewData["ShipId"] = id;
+                return this.View(model);
+            }
+
+            Ship? ship = _context.Ships.Find(id);
+            if (ship == null)
+            {
+                return this.View("BadRequest");
+            }
+
+            ship.Name = model.Name;
+            ship.Class = model.Class;
+            ship.ShipHullClass = model.ShipHullClass;
+            ship.Rarity = model.Rarity;
+            ship.ShipProductionYear = model.ShipProductionYear;
+            ship.ImageUrl = model.ImageUrl ?? string.Empty;
+            ship.History = model.History ?? string.Empty;
+            ship.FleetId = model.FleetId;
+            ship.IsAvailable = model.IsAvailable;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = ship.Id });
+        }
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            Ship? ship = _context
+                .Ships
+                .Include(s => s.Fleet)
+                .AsNoTracking()
+                .SingleOrDefault(s => s.Id == id);
+
+            if (ship == null)
+            {
+                return this.View("BadRequest");
+            }
+
+            return this.View(ship);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Guid id, Ship model)
+        {
+            Ship? ship = _context.Ships.Find(id);
+            if (ship == null)
+            {
+                return this.View("BadRequest");
+            }
+
+            _context.Ships.Remove(ship);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }

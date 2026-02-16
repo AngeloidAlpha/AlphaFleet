@@ -1,0 +1,145 @@
+@model AlphaFleet.Models.ViewModels.ShipFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Ship";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-controller="Ship" asp-action="Edit" asp-route-id="@ViewData["ShipId"]" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label">Ship Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Enter ship name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Class" class="form-label">Class</label>
+                        <input asp-for="Class" class="form-control" placeholder="e.g. Fighter, Corvette" />
+                        <span asp-validation-for="Class" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShipHullClass" class="form-label">Hull Class</label>
+                        <select asp-for="ShipHullClass" asp-items="Html.GetEnumSelectList<AlphaFleet.Models.Enums.ShipHullClass>()" class="form-select">
+                        </select>
+                        <span asp-validation-for="ShipHullClass" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Rarity</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="button" id="rollRarityBtn" class="btn btn-warning">
+                                🎲 Re-Roll
+                            </button>
+                            <span id="rarityResult" class="badge fs-6 bg-@GetRarityColor(Model.Rarity)">@Model.Rarity</span>
+                        </div>
+                        <input type="hidden" asp-for="Rarity" id="rarityInput" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShipProductionYear" class="form-label">Production Year</label>
+                        <input asp-for="ShipProductionYear" class="form-control" type="number" placeholder="e.g. 2230" />
+                        <span asp-validation-for="ShipProductionYear" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FleetId" class="form-label">Fleet</label>
+                        <select asp-for="FleetId" class="form-select">
+                            <option value="">-- Select a Fleet --</option>
+                            @foreach (var fleet in Model.Fleets)
+                            {
+                                <option value="@fleet.Id">@fleet.Name — @fleet.Location</option>
+                            }
+                        </select>
+                        <span asp-validation-for="FleetId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ImageUrl" class="form-label">Image URL (optional)</label>
+                        <input asp-for="ImageUrl" class="form-control" placeholder="/images/ship.jpg" />
+                    </div>
+                    <div class="col-md-6 mb-3 d-flex align-items-end">
+                        <div class="form-check">
+                            <input asp-for="IsAvailable" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsAvailable" class="form-check-label">Available</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="History" class="form-label">Ship History (optional)</label>
+                    <textarea asp-for="History" class="form-control" rows="4" placeholder="Enter the ship's history and background..."></textarea>
+                    <span asp-validation-for="History" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                    <a asp-controller="Ship" asp-action="Details" asp-route-id="@ViewData["ShipId"]" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const rarityColors = {
+            'Common': 'bg-secondary',
+            'Rare': 'bg-primary',
+            'Epic': 'bg-purple',
+            'Legendary': 'bg-warning text-dark'
+        };
+
+        document.getElementById('rollRarityBtn').addEventListener('click', async function () {
+            const btn = this;
+            const badge = document.getElementById('rarityResult');
+            const input = document.getElementById('rarityInput');
+
+            btn.disabled = true;
+            btn.textContent = '🎲 Rolling...';
+            badge.className = 'badge fs-6 bg-secondary';
+            badge.textContent = '...';
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const response = await fetch('@Url.Action("RollRarity", "Ship")', {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            });
+            const data = await response.json();
+
+            setTimeout(function () {
+                input.value = data.value;
+                badge.textContent = data.rarity;
+                badge.className = 'badge fs-6 ' + (rarityColors[data.rarity] || 'bg-secondary');
+                btn.disabled = false;
+                btn.textContent = '🎲 Re-Roll';
+            }, 500);
+        });
+    </script>
+}
+
+@functions {
+    private string GetRarityColor(AlphaFleet.Models.Enums.ShipRarity rarity)
+    {
+        return rarity switch
+        {
+            AlphaFleet.Models.Enums.ShipRarity.Common => "secondary",
+            AlphaFleet.Models.Enums.ShipRarity.Rare => "info",
+            AlphaFleet.Models.Enums.ShipRarity.Epic => "warning",
+            AlphaFleet.Models.Enums.ShipRarity.Legendary => "danger",
+            _ => "dark"
+        };
+    }
+}

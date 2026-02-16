@@ -49,6 +49,7 @@
                         <th>Production Year</th>
                         <th>Fleet</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,6 +93,10 @@
                                 {
                                     <span class="badge bg-danger">Unavailable</span>
                                 }
+                            </td>
+                            <td>
+                                <a asp-controller="Ship" asp-action="Edit" asp-route-id="@ship.Id" class="btn btn-sm btn-outline-primary">✏️</a>
+                                <a asp-controller="Ship" asp-action="Delete" asp-route-id="@ship.Id" class="btn btn-sm btn-outline-danger">🗑️</a>
                             </td>
                         </tr>
                     }
