@@ -24,6 +24,8 @@ namespace AlphaFleet.Models
         [Range(ShipProductionYearMinValue, ShipProductionYearMaxValue, ErrorMessage = "Production year must be {1} before {2}.")]
         public int ShipProductionYear { get; set; }
         public string ImageUrl { get; set; } = null!;
+        [MaxLength(ShipDescriptionMaxLength)]
+        public string History { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Fleet))]
         public Guid FleetId { get; set; }

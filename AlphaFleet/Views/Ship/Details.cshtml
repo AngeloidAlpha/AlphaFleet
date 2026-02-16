@@ -59,6 +59,18 @@
         </div>
     </div>
 
+    @if (!string.IsNullOrEmpty(Model.History))
+    {
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">📜 Ship History</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Model.History</p>
+            </div>
+        </div>
+    }
+
     <a class="btn btn-secondary mt-3" asp-controller="Ship" asp-action="Index">← Back to All Ships</a>
 </div>
 
