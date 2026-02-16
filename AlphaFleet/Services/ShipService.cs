@@ -7,10 +7,10 @@ namespace AlphaFleet.Services
     {
         private readonly List<Ship> _ships = new List<Ship>
         {
-            new Ship {Id = 1, Name = "Common Rarity", Rarity = ShipRarity.Common },
-            new Ship {Id = 2, Name = "Rare Rarity", Rarity = ShipRarity.Rare },
-            new Ship {Id = 3, Name = "Epic Rarity", Rarity = ShipRarity.Epic },
-            new Ship {Id = 4, Name = "Legendary Rarity", Rarity = ShipRarity.Legendary },
+            new Ship {Id = Guid.NewGuid(), Name = "Common Rarity", Rarity = ShipRarity.Common },
+            new Ship {Id = Guid.NewGuid(), Name = "Rare Rarity", Rarity = ShipRarity.Rare },
+            new Ship {Id = Guid.NewGuid(), Name = "Epic Rarity", Rarity = ShipRarity.Epic },
+            new Ship {Id = Guid.NewGuid(), Name = "Legendary Rarity", Rarity = ShipRarity.Legendary },
         };
         public  List<Ship> GetShipByRarity(ShipRarity rarity)
         {

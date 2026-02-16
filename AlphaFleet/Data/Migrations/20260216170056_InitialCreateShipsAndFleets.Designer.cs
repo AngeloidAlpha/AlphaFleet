@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaFleet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260214102318_SeedInitialShipsAndFleets")]
-    partial class SeedInitialShipsAndFleets
+    [Migration("20260216170056_InitialCreateShipsAndFleets")]
+    partial class InitialCreateShipsAndFleets
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,11 +110,9 @@ namespace AlphaFleet.Data.Migrations
 
             modelBuilder.Entity("AlphaFleet.Models.Ship", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Class")
                         .IsRequired()
@@ -122,6 +120,11 @@ namespace AlphaFleet.Data.Migrations
 
                     b.Property<Guid>("FleetId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("History")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -155,9 +158,10 @@ namespace AlphaFleet.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
                             Class = "Interceptor",
                             FleetId = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"),
+                            History = "The Vanguard was the first interceptor-class vessel produced by the Sol Shipyards in 2225. Originally designed for rapid reconnaissance missions, it quickly became the backbone of Alpha Fleet's patrol operations. Its lightweight frame and advanced sensor array made it ideal for early-warning deployments along the outer rim.",
                             ImageUrl = "/images/vanguard.jpg",
                             IsAvailable = true,
                             Name = "Vanguard",
@@ -167,9 +171,10 @@ namespace AlphaFleet.Data.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("3b12f1b5-981a-4d72-804b-ae15c78264ab"),
                             Class = "Fighter",
                             FleetId = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"),
+                            History = "Commissioned in 2228, the Corsair was built to fill the gap between interceptors and corvettes. Armed with dual plasma cannons and reinforced hull plating, it earned its reputation during the Orion Skirmishes where a squadron of Corsairs held off an entire enemy flotilla for 72 hours.",
                             ImageUrl = "/images/corsair.jpg",
                             IsAvailable = true,
                             Name = "Corsair",
@@ -179,9 +184,10 @@ namespace AlphaFleet.Data.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("9c4e6f2a-7d38-4e5b-b120-df6a41c8e9c7"),
                             Class = "Corvette",
                             FleetId = new Guid("4241c74f-092c-4249-b731-954fb7658830"),
+                            History = "The Harbinger is one of the oldest active vessels in the fleet, launched in 2215 from the Centauri Reach drydocks. It served as a testbed for experimental stealth technology and was instrumental in covert operations during the Vega Conflict. Currently decommissioned for a major refit of its propulsion systems.",
                             ImageUrl = "/images/harbinger.jpg",
                             IsAvailable = false,
                             Name = "Harbinger",
@@ -191,9 +197,10 @@ namespace AlphaFleet.Data.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("d5a83f4e-2b17-49c6-a8e3-7f1d9b05c42e"),
                             Class = "Frigate",
                             FleetId = new Guid("4241c74f-092c-4249-b731-954fb7658830"),
+                            History = "The Aegis was designed as a defensive powerhouse, equipped with multi-layered shield generators and point-defense systems. Launched in 2230, it has served as the flagship escort for Beta Squadron, protecting capital ships during large-scale fleet engagements across the Orion Sector.",
                             ImageUrl = "/images/aegis.jpg",
                             IsAvailable = true,
                             Name = "Aegis",
@@ -203,9 +210,10 @@ namespace AlphaFleet.Data.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("e72b4a19-6c5d-4f83-91a2-8d3e0b7fc56a"),
                             Class = "Destroyer",
                             FleetId = new Guid("86634405-36a8-4727-93bd-97273e947361"),
+                            History = "The Leviathan is a destroyer of unmatched firepower, completed in 2240 at the classified Sirius Gate facility. Its main battery can cripple a space station in a single salvo. Only one was ever built due to the immense cost. Currently undergoing repairs after sustaining heavy damage in the Battle of Andromeda Port.",
                             ImageUrl = "/images/leviathan.jpg",
                             IsAvailable = false,
                             Name = "Leviathan",

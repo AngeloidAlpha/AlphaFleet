@@ -1,5 +1,6 @@
 ﻿using AlphaFleet.Data;
 using AlphaFleet.Models;
+using AlphaFleet.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,9 @@ namespace AlphaFleet.Controllers
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                string searchTerm = search.Trim().ToLower();
+                string searchTerm = search
+                    .Trim()
+                    .ToLower();
                 query = query.Where(s =>
                     s.Name.ToLower().Contains(searchTerm) ||
                     s.Class.ToLower().Contains(searchTerm));
@@ -43,7 +46,7 @@ namespace AlphaFleet.Controllers
             return this.View(allShips);
         }
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(Guid id)
         {
             Ship? ship = _context
                 .Ships
@@ -55,6 +58,51 @@ namespace AlphaFleet.Controllers
                 return this.View("BadRequest");
             }
             return this.View(ship);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new ShipFormViewModel
+            {
+                Fleets = _context
+                .Fleets
+                .AsNoTracking()
+                .OrderBy(f => f.Name)
+                .ToList()
+            };
+            return this.View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ShipFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Fleets = _context
+                    .Fleets
+                    .AsNoTracking()
+                    .OrderBy(f => f.Name)
+                    .ToList();
+                return this.View(model);
+            }
+
+            var ship = new Ship
+            {
+                Name = model.Name,
+                Class = model.Class,
+                ShipHullClass = model.ShipHullClass,
+                Rarity = model.Rarity,
+                ShipProductionYear = model.ShipProductionYear,
+                ImageUrl = model.ImageUrl ?? string.Empty,
+                History = model.History ?? string.Empty,
+                FleetId = model.FleetId,
+                IsAvailable = model.IsAvailable
+            };
+
+            _context.Ships.Add(ship);
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = ship.Id });
         }
     }
 }

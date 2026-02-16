@@ -2,7 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to AlphaFleet</h1>
+        <p class="lead">Manage your fleets and ships across the galaxy.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🚀 Add Ship</h5>
+                    <p class="card-text">Add a new ship to one of your fleets.</p>
+                    <a asp-controller="Ship" asp-action="Create" class="btn btn-primary">Add Ship</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📋 View Fleets</h5>
+                    <p class="card-text">Browse all fleets and their assigned ships.</p>
+                    <a asp-controller="Fleet" asp-action="Index" class="btn btn-outline-primary">View Fleets</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🛸 View Ships</h5>
+                    <p class="card-text">Search and explore all ships in the database.</p>
+                    <a asp-controller="Ship" asp-action="Index" class="btn btn-outline-primary">View Ships</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
