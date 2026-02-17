@@ -52,7 +52,9 @@ namespace AlphaFleet.Services
                 }
             }
             // This should never happen if probabilities are correctly defined
-            return _shipService.GetShipByRarity(ShipRarity.Common).FirstOrDefault();
+            return _shipService
+                .GetShipByRarity(ShipRarity.Common).
+                FirstOrDefault();
         }
     }
     

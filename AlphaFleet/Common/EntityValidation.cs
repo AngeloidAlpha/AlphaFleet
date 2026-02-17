@@ -15,5 +15,10 @@
         public const int FleetNameMaxLength = 100;
         public const int FleetLocationNameMinLength = 3;
         public const int FleetLocationNameMaxLength = 100;
+
+        /* Admirals */
+        public const int AdmiralNameMinLength = 2;
+        public const int AdmiralNameMaxLength = 100;
+        public const int AdmiralBioMaxLength = 3000;
     }
 }
