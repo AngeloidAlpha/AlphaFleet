@@ -19,7 +19,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\AlphaFleet.Common\AlphaFleet.Common.csproj" />
-    <ProjectReference Include="..\AlphaFleet.Data.Model\AlphaFleet.Data.Models.csproj" />
+    <ProjectReference Include="..\AlphaFleet.Data.Models\AlphaFleet.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

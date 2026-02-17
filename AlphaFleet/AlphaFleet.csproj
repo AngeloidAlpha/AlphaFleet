@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.3" />
@@ -19,13 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\ViewModels\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AlphaFleet.Common\AlphaFleet.Common.csproj" />
-    <ProjectReference Include="..\AlphaFleet.Data.Model\AlphaFleet.Data.Models.csproj" />
+    <ProjectReference Include="..\AlphaFleet.Data.Models\AlphaFleet.Data.Models.csproj" />
     <ProjectReference Include="..\AlphaFleet.Data\AlphaFleet.Data.csproj" />
     <ProjectReference Include="..\AlphaFleet.Services\AlphaFleet.Services.csproj" />
   </ItemGroup>

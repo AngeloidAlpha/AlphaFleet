@@ -3,9 +3,9 @@ using AlphaFleet.Data.Models.Enums;
 
 namespace AlphaFleet.Services
 {
-    public class GachaService
+    public class GachaService : IGachaService
     {
-        private readonly ShipService _shipService;
+        private readonly IShipService _shipService;
         private readonly Random _random = new Random();
         private readonly Dictionary<ShipRarity, double> _rarityProbabilities = new Dictionary<ShipRarity, double>
         {
@@ -14,7 +14,7 @@ namespace AlphaFleet.Services
             { ShipRarity.Epic, 9.0 },
             { ShipRarity.Legendary, 1.00 }
         };
-        public GachaService(ShipService shipService)
+        public GachaService(IShipService shipService)
         {
             _shipService = shipService;
         }
