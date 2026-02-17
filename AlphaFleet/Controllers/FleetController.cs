@@ -1,43 +1,31 @@
-﻿using AlphaFleet.Data;
-using AlphaFleet.Data.Configuration;
-using AlphaFleet.Models;
+﻿using AlphaFleet.Data.Models;
+using AlphaFleet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlphaFleet.Controllers
 {
     [Authorize]
     public class FleetController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        /* Constructor Injection - Most commonly used */
-        /* Pattern to remember: Register in Collection then Consume */
-        public FleetController(ApplicationDbContext dbContext)
+        private readonly IFleetService _fleetService;
+
+        public FleetController(IFleetService fleetService)
         {
-            /* Store the injected instance in a local field */
-            _context = dbContext;
+            _fleetService = fleetService;
         }
+
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Fleet> allFleets = _context
-                .Fleets
-                .Include(f => f.Ships)
-                .AsSplitQuery()
-                .AsNoTracking()
-                .ToArray();
+            IEnumerable<Fleet> allFleets = await _fleetService.GetAllFleetsAsync(null);
             return this.View(allFleets);
         }
+
         [HttpGet]
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            Fleet? fleet = _context
-                .Fleets
-                .Include(f => f.Ships)
-                .AsSplitQuery()
-                .AsNoTracking()
-                .FirstOrDefault(f => f.Id == id);
+            Fleet? fleet = await _fleetService.GetFleetByIdAsync(id);
             if (fleet == null)
             {
                 return this.View("BadRequest");

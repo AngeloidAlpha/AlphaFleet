@@ -23,19 +23,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Fleets
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Fleet" asp-action="Index">All Fleets</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><h6 class="dropdown-header">Quick Access</h6></li>
-                                <li><a class="dropdown-item" asp-controller="Fleet" asp-action="Details" asp-route-id="c8b02d34-76f8-4dbd-942e-2d680d5b84ef">Alpha Fleet</a></li>
-                                <li><a class="dropdown-item" asp-controller="Fleet" asp-action="Details" asp-route-id="4241c74f-092c-4249-b731-954fb7658830">Beta Squadron</a></li>
-                                <li><a class="dropdown-item" asp-controller="Fleet" asp-action="Details" asp-route-id="86634405-36a8-4727-93bd-97273e947361">Gamma Wing</a></li>
-                            </ul>
-                        </li>
+                        @await Component.InvokeAsync("FleetDropdown")
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Ship" asp-action="Index">Ships</a>
                         </li>

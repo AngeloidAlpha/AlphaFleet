@@ -1,82 +1,53 @@
-﻿using AlphaFleet.Data;
-using AlphaFleet.Models;
-using AlphaFleet.Models.ViewModels;
+﻿using AlphaFleet.Data.Models;
+using AlphaFleet.Data.Models.ViewModels;
 using AlphaFleet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlphaFleet.Controllers
 {
     [Authorize]
     public class ShipController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly GachaService _gachaService;
-        /* Constructor Injection - Most commonly used */
-        /* Pattern to remember: Register in Collection then Consume */
-        public ShipController(ApplicationDbContext dbContext, GachaService gachaService)
+        private readonly IShipService _shipService;
+        private readonly IGachaService _gachaService;
+
+        public ShipController(IShipService shipService, IGachaService gachaService)
         {
-            /* Store the injected instance in a local field */
-            _context = dbContext;
+            _shipService = shipService;
             _gachaService = gachaService;
         }
+
         [HttpGet]
-        public IActionResult Index(string? search)
+        public async Task<IActionResult> Index(string? search)
         {
-            IQueryable<Ship> query = _context
-                .Ships
-                .Include(s => s.Fleet)
-                .AsNoTracking();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                string searchTerm = search
-                    .Trim()
-                    .ToLower();
-                query = query.Where(s =>
-                    s.Name.ToLower().Contains(searchTerm) ||
-                    s.Class.ToLower().Contains(searchTerm));
-            }
-
-            IEnumerable<Ship> allShips = query
-                .OrderBy(s => s.Name)
-                .ThenBy(s => s.ShipHullClass)
-                .ThenBy(s => s.Rarity)
-                .ThenByDescending(s => s.IsAvailable)
-                .ThenByDescending(s => s.ShipProductionYear)
-                .ToArray();
+            IEnumerable<Ship> allShips = await _shipService.GetAllShipsAsync(search);
 
             ViewData["CurrentSearch"] = search;
             return this.View(allShips);
         }
+
         [HttpGet]
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            Ship? ship = _context
-                .Ships
-                .Include(s => s.Fleet)
-                .AsNoTracking()
-                .SingleOrDefault(s => s.Id == id);
+            Ship? ship = await _shipService.GetShipByIdAsync(id);
             if (ship == null)
             {
                 return this.View("BadRequest");
             }
             return this.View(ship);
         }
+
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new ShipFormViewModel
             {
-                Fleets = _context
-                .Fleets
-                .AsNoTracking()
-                .OrderBy(f => f.Name)
-                .ToList()
+                Fleets = await _shipService.GetAllFleetsAsync()
             };
             return this.View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RollRarity()
@@ -87,15 +58,11 @@ namespace AlphaFleet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ShipFormViewModel model)
+        public async Task<IActionResult> Create(ShipFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.Fleets = _context
-                    .Fleets
-                    .AsNoTracking()
-                    .OrderBy(f => f.Name)
-                    .ToList();
+                model.Fleets = await _shipService.GetAllFleetsAsync();
                 return this.View(model);
             }
 
@@ -112,15 +79,15 @@ namespace AlphaFleet.Controllers
                 IsAvailable = model.IsAvailable
             };
 
-            _context.Ships.Add(ship);
-            _context.SaveChanges();
+            await _shipService.CreateShipAsync(ship);
 
             return RedirectToAction("Details", new { id = ship.Id });
         }
+
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            Ship? ship = _context.Ships.Find(id);
+            Ship? ship = await _shipService.GetShipByIdAsync(id);
             if (ship == null)
             {
                 return this.View("BadRequest");
@@ -137,24 +104,25 @@ namespace AlphaFleet.Controllers
                 History = ship.History,
                 FleetId = ship.FleetId,
                 IsAvailable = ship.IsAvailable,
-                Fleets = _context.Fleets.AsNoTracking().OrderBy(f => f.Name).ToList()
+                Fleets = await _shipService.GetAllFleetsAsync()
             };
 
             ViewData["ShipId"] = id;
             return this.View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, ShipFormViewModel model)
+        public async Task<IActionResult> Edit(Guid id, ShipFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.Fleets = _context.Fleets.AsNoTracking().OrderBy(f => f.Name).ToList();
+                model.Fleets = await _shipService.GetAllFleetsAsync();
                 ViewData["ShipId"] = id;
                 return this.View(model);
             }
 
-            Ship? ship = _context.Ships.Find(id);
+            Ship? ship = await _shipService.GetShipByIdAsync(id);
             if (ship == null)
             {
                 return this.View("BadRequest");
@@ -170,19 +138,15 @@ namespace AlphaFleet.Controllers
             ship.FleetId = model.FleetId;
             ship.IsAvailable = model.IsAvailable;
 
-            _context.SaveChanges();
+            await _shipService.UpdateShipAsync(ship);
 
             return RedirectToAction("Details", new { id = ship.Id });
         }
-        [HttpGet]
-        public IActionResult Delete(Guid id)
-        {
-            Ship? ship = _context
-                .Ships
-                .Include(s => s.Fleet)
-                .AsNoTracking()
-                .SingleOrDefault(s => s.Id == id);
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            Ship? ship = await _shipService.GetShipByIdAsync(id);
             if (ship == null)
             {
                 return this.View("BadRequest");
@@ -190,19 +154,12 @@ namespace AlphaFleet.Controllers
 
             return this.View(ship);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Guid id, Ship model)
+        public async Task<IActionResult> Delete(Guid id, Ship model)
         {
-            Ship? ship = _context.Ships.Find(id);
-            if (ship == null)
-            {
-                return this.View("BadRequest");
-            }
-
-            _context.Ships.Remove(ship);
-            _context.SaveChanges();
-
+            await _shipService.DeleteShipAsync(id);
             return RedirectToAction("Index");
         }
     }

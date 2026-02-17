@@ -1,4 +1,4 @@
-@model AlphaFleet.Models.Fleet
+@model AlphaFleet.Data.Models.Fleet
 
 @{
     ViewData["Title"] = Model.Name;
@@ -6,6 +6,36 @@
 
 <div class="container mt-5">
     <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    @if (Model.Admiral != null)
+    {
+        <div class="card mb-4">
+            <div class="card-header text-white" style="background-color: #4a148c;">
+                <h5 class="mb-0">⚓ Fleet Admiral</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @if (!string.IsNullOrEmpty(Model.Admiral.ImageUrl))
+                    {
+                        <div class="col-md-3 text-center">
+                            <img src="@Model.Admiral.ImageUrl" alt="@Model.Admiral.FirstName @Model.Admiral.LastName"
+                                 class="img-fluid rounded" style="max-height: 200px;" />
+                        </div>
+                    }
+                    <div class="@(string.IsNullOrEmpty(Model.Admiral.ImageUrl) ? "col-md-12" : "col-md-9")">
+                        <h4>@Model.Admiral.FirstName @Model.Admiral.LastName</h4>
+                        <p>
+                            <span class="badge bg-info fs-6">@Model.Admiral.Rank</span>
+                        </p>
+                        @if (!string.IsNullOrEmpty(Model.Admiral.Bio))
+                        {
+                            <p class="text-muted">@Model.Admiral.Bio</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <partial name="_FleetDetails" model="Model" />
 
