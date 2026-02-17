@@ -12,6 +12,7 @@
     <Project Path="AlphaFleet.Services/AlphaFleet.Services.csproj" Id="76032382-f326-45ff-8e0e-cb0efd32abaf" />
   </Folder>
   <Folder Name="/Web/">
+    <Project Path="AlphaFleet.ViewModels/AlphaFleet.ViewModels.csproj" Id="fe050381-3063-4d66-a13b-b2d387d5eb77" />
     <Project Path="AlphaFleet/AlphaFleet.csproj" />
   </Folder>
 </Solution>
