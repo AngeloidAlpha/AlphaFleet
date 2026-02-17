@@ -1,8 +1,8 @@
-using AlphaFleet.Models.Enums;
+using AlphaFleet.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using static AlphaFleet.Common.EntityValidation;
 
-namespace AlphaFleet.Models.ViewModels
+namespace AlphaFleet.Data.Models.ViewModels
 {
     public class ShipFormViewModel
     {

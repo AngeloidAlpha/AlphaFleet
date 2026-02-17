@@ -1,4 +1,4 @@
-namespace AlphaFleet.Models.Enums
+namespace AlphaFleet.Data.Models.Enums
 {
     public enum AdmiralRank
     {

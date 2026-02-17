@@ -1,3 +1,20 @@
 <Solution>
-  <Project Path="AlphaFleet/AlphaFleet.csproj" />
+  <Folder Name="/Common/">
+    <Project Path="AlphaFleet.Common/AlphaFleet.Common.csproj" Id="fedf26b0-7bb5-4363-a7c8-02274d243907" />
+  </Folder>
+  <Folder Name="/Data.Models/">
+    <File Path="AlphaFleet/Models/Admiral.cs" />
+    <File Path="AlphaFleet/Models/Fleet.cs" />
+    <File Path="AlphaFleet/Models/Ship.cs" />
+    <Project Path="AlphaFleet.Data.Model/AlphaFleet.Data.Models.csproj" Id="699034f5-48de-4a16-a072-09a26ac6dca9" />
+  </Folder>
+  <Folder Name="/Data/">
+    <Project Path="AlphaFleet.Data/AlphaFleet.Data.csproj" Id="c7d40c79-1f3e-47a5-8789-9c9e32c32200" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="AlphaFleet.Services/AlphaFleet.Services.csproj" Id="76032382-f326-45ff-8e0e-cb0efd32abaf" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="AlphaFleet/AlphaFleet.csproj" />
+  </Folder>
 </Solution>

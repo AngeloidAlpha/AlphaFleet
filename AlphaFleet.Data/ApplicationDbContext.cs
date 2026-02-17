@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AlphaFleet.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlphaFleet.Data
@@ -9,9 +10,9 @@ namespace AlphaFleet.Data
             : base(options)
         {
         }
-        public virtual DbSet<Models.Ship> Ships { get; set; }
-        public virtual DbSet<Models.Fleet> Fleets { get; set; }
-        public virtual DbSet<Models.Admiral> Admirals { get; set; }
+        public virtual DbSet<Ship> Ships { get; set; }
+        public virtual DbSet<Fleet> Fleets { get; set; }
+        public virtual DbSet<Admiral> Admirals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

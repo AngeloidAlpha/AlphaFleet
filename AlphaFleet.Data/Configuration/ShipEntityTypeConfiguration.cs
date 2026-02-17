@@ -1,5 +1,5 @@
-﻿using AlphaFleet.Models;
-using AlphaFleet.Models.Enums;
+﻿using AlphaFleet.Data.Models;
+using AlphaFleet.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

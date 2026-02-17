@@ -1,4 +1,4 @@
-namespace AlphaFleet.Models
+namespace AlphaFleet.Data.Models
 {
     public class ErrorViewModel
     {

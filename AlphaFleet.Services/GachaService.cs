@@ -1,5 +1,5 @@
-﻿using AlphaFleet.Models;
-using AlphaFleet.Models.Enums;
+﻿using AlphaFleet.Data.Models;
+using AlphaFleet.Data.Models.Enums;
 
 namespace AlphaFleet.Services
 {
@@ -53,8 +53,8 @@ namespace AlphaFleet.Services
             }
             // This should never happen if probabilities are correctly defined
             return _shipService
-                .GetShipByRarity(ShipRarity.Common).
-                FirstOrDefault();
+                .GetShipByRarity(ShipRarity.Common)
+                .FirstOrDefault();
         }
     }
     

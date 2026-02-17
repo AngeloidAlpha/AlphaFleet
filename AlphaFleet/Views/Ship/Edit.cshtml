@@ -1,4 +1,4 @@
-@model AlphaFleet.Models.ViewModels.ShipFormViewModel
+@model AlphaFleet.Data.Models.ViewModels.ShipFormViewModel
 
 @{
     ViewData["Title"] = "Edit Ship";
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label asp-for="ShipHullClass" class="form-label">Hull Class</label>
-                        <select asp-for="ShipHullClass" asp-items="Html.GetEnumSelectList<AlphaFleet.Models.Enums.ShipHullClass>()" class="form-select">
+                        <select asp-for="ShipHullClass" asp-items="Html.GetEnumSelectList<AlphaFleet.Data.Models.Enums.ShipHullClass>()" class="form-select">
                         </select>
                         <span asp-validation-for="ShipHullClass" class="text-danger"></span>
                     </div>
@@ -131,14 +131,14 @@
 }
 
 @functions {
-    private string GetRarityColor(AlphaFleet.Models.Enums.ShipRarity rarity)
+    private string GetRarityColor(AlphaFleet.Data.Models.Enums.ShipRarity rarity)
     {
         return rarity switch
         {
-            AlphaFleet.Models.Enums.ShipRarity.Common => "secondary",
-            AlphaFleet.Models.Enums.ShipRarity.Rare => "info",
-            AlphaFleet.Models.Enums.ShipRarity.Epic => "warning",
-            AlphaFleet.Models.Enums.ShipRarity.Legendary => "danger",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Common => "secondary",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Rare => "info",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Epic => "warning",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Legendary => "danger",
             _ => "dark"
         };
     }

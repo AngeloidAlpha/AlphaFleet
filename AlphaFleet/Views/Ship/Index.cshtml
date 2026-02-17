@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AlphaFleet.Models.Ship>
+﻿@model IEnumerable<AlphaFleet.Data.Models.Ship>
 
 @{
     ViewData["Title"] = "Ships";
@@ -107,14 +107,14 @@
 </div>
 
 @functions {
-    private string GetRarityColor(AlphaFleet.Models.Enums.ShipRarity rarity)
+    private string GetRarityColor(AlphaFleet.Data.Models.Enums.ShipRarity rarity)
     {
         return rarity switch
         {
-            AlphaFleet.Models.Enums.ShipRarity.Common => "secondary",
-            AlphaFleet.Models.Enums.ShipRarity.Rare => "info",
-            AlphaFleet.Models.Enums.ShipRarity.Epic => "warning",
-            AlphaFleet.Models.Enums.ShipRarity.Legendary => "danger",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Common => "secondary",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Rare => "info",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Epic => "warning",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Legendary => "danger",
             _ => "dark"
         };
     }

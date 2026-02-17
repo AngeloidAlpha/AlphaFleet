@@ -1,4 +1,4 @@
-﻿using AlphaFleet.Models;
+﻿using AlphaFleet.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

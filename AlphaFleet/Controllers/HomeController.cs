@@ -1,4 +1,4 @@
-using AlphaFleet.Models;
+using AlphaFleet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

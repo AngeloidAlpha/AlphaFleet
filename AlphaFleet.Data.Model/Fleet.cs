@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlphaFleet.Models
+namespace AlphaFleet.Data.Models
 {
     using static Common.EntityValidation;
     public class Fleet

@@ -1,10 +1,10 @@
-﻿using AlphaFleet.Models.Enums;
+﻿using AlphaFleet.Data.Models.Enums;
 using static AlphaFleet.Common.EntityValidation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace AlphaFleet.Models
+namespace AlphaFleet.Data.Models
 {
     public class Ship
     {

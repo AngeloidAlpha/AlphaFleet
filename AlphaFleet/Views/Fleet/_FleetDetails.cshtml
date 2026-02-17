@@ -1,4 +1,4 @@
-@model AlphaFleet.Models.Fleet
+@model AlphaFleet.Data.Models.Fleet
 
 <div class="card mb-4">
     <div class="card-header text-white" style="background-color: #1a237e;">
@@ -62,14 +62,14 @@
 </div>
 
 @functions {
-    private string GetRarityColor(AlphaFleet.Models.Enums.ShipRarity rarity)
+    private string GetRarityColor(AlphaFleet.Data.Models.Enums.ShipRarity rarity)
     {
         return rarity switch
         {
-            AlphaFleet.Models.Enums.ShipRarity.Common => "secondary",
-            AlphaFleet.Models.Enums.ShipRarity.Rare => "info",
-            AlphaFleet.Models.Enums.ShipRarity.Epic => "warning",
-            AlphaFleet.Models.Enums.ShipRarity.Legendary => "danger",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Common => "secondary",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Rare => "info",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Epic => "warning",
+            AlphaFleet.Data.Models.Enums.ShipRarity.Legendary => "danger",
             _ => "dark"
         };
     }

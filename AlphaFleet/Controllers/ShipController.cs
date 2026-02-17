@@ -1,6 +1,6 @@
 ﻿using AlphaFleet.Data;
-using AlphaFleet.Models;
-using AlphaFleet.Models.ViewModels;
+using AlphaFleet.Data.Models;
+using AlphaFleet.Data.Models.ViewModels;
 using AlphaFleet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
