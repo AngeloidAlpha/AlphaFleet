@@ -19,6 +19,7 @@ namespace AlphaFleet.Services
             IQueryable<Fleet> query = _dbContext
                 .Fleets
                 .Include(f => f.Ships)
+                .Include(f => f.Admiral)
                 .AsSplitQuery()
                 .AsNoTracking();
 
@@ -39,6 +40,7 @@ namespace AlphaFleet.Services
             return await _dbContext
                 .Fleets
                 .Include(f => f.Ships)
+                .Include(f => f.Admiral)
                 .AsSplitQuery()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(f => f.Id == id);

@@ -14,7 +14,7 @@ namespace AlphaFleet.Services
             _dbContext = dbContext;
         }
 
-        // 1. Get all ships with optional search filter (async)
+        // 1. Get all ships with optional search filter
         public async Task<IEnumerable<Ship>> GetAllShipsAsync(string? search)
         {
             IQueryable<Ship> query = _dbContext
@@ -39,7 +39,7 @@ namespace AlphaFleet.Services
                 .ToListAsync();
         }
 
-        // 2. Get a single ship by ID (async)
+        // Get a single ship by ID
         public async Task<Ship?> GetShipByIdAsync(Guid id)
         {
             return await _dbContext
@@ -49,21 +49,21 @@ namespace AlphaFleet.Services
                 .SingleOrDefaultAsync(s => s.Id == id);
         }
 
-        // 3. Create a new ship (async)
+        // Create a new ship
         public async Task CreateShipAsync(Ship ship)
         {
             _dbContext.Ships.Add(ship);
             await _dbContext.SaveChangesAsync();
         }
 
-        // 4. Update an existing ship (async)
+        // Update an existing ship
         public async Task UpdateShipAsync(Ship ship)
         {
             _dbContext.Ships.Update(ship);
             await _dbContext.SaveChangesAsync();
         }
 
-        // 5. Delete a ship by ID (async)
+        // 5. Delete a ship by ID
         public async Task DeleteShipAsync(Guid id)
         {
             Ship? ship = await _dbContext.Ships.FindAsync(id);
@@ -74,7 +74,7 @@ namespace AlphaFleet.Services
             }
         }
 
-        // 6. Get all fleets for dropdowns (async)
+        // 6. Get all fleets for dropdowns
         public async Task<IEnumerable<Fleet>> GetAllFleetsAsync()
         {
             return await _dbContext

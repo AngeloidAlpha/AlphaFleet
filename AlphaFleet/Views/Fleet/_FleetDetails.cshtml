@@ -7,6 +7,10 @@
             <span class="badge bg-secondary float-end">@Model.Ships.Count ships</span>
         </h5>
         <small class="text-light">📍 @Model.Location</small>
+        @if (Model.Admiral != null)
+        {
+            <small class="text-light d-block">⚓ Admiral @Model.Admiral.FirstName @Model.Admiral.LastName</small>
+        }
     </div>
     <div class="card-body">
         @if (Model.Ships == null || Model.Ships.Count == 0)
