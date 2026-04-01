@@ -10,8 +10,4 @@
     <ProjectReference Include="..\AlphaFleet.Common\AlphaFleet.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>

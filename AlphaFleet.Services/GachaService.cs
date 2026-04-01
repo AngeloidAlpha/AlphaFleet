@@ -51,7 +51,6 @@ namespace AlphaFleet.Services
                     return shipsOfRarity[shipIndex];
                 }
             }
-            // This should never happen if probabilities are correctly defined
             return _shipService
                 .GetShipByRarity(ShipRarity.Common)
                 .FirstOrDefault();

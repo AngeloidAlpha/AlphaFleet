@@ -6,7 +6,6 @@ namespace AlphaFleet.Data.Configuration
 {
     public class FleetEntityTypeConfiguration : IEntityTypeConfiguration<Fleet>
     {
-        // Seed data defined at the type level so it's not recreated on every Configure call
         private readonly Fleet[] SeedFleets = new[]
         {
             new Fleet { Id = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"), Name = "Alpha Fleet", Location = "Sol System" },
@@ -23,11 +22,8 @@ namespace AlphaFleet.Data.Configuration
         public void Configure(EntityTypeBuilder<Fleet> entity)
         {
             entity.HasKey(f => f.Id);
-
-            // Basic property configuration (optional - ensures consistency with data annotations)
             entity.Property(f => f.Name).IsRequired();
             entity.Property(f => f.Location).IsRequired();
-            // Use the shared seed data defined at type level
             entity.HasData(SeedFleets);
         }
     }
