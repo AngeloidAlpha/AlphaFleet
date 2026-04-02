@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IShipService, ShipService>();
 builder.Services.AddScoped<IFleetService, FleetService>();
 builder.Services.AddScoped<IGachaService, GachaService>();
