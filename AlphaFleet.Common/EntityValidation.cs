@@ -30,5 +30,10 @@
         public const int StationDescriptionMaxLength = 5000;
         public const int StationHealthMinValue = 0;
         public const int StationHealthMaxValue = 10000;
+
+        /* Battle */
+        public const int BattleDamageMinValue = 0;
+        public const int BattleDamageMaxValue = 2147483647;
+        public const int BattleDescriptionMaxLength = 5000;
     }
 }
