@@ -10,6 +10,7 @@ builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IShipService, ShipService>();
 builder.Services.AddScoped<IFleetService, FleetService>();
 builder.Services.AddScoped<IGachaService, GachaService>();
+builder.Services.AddScoped<IBattleService, BattleService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("AlphaFleet.Data")));
