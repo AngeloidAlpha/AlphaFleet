@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AlphaFleet.Controllers
 {
     [Authorize]
-    public class BattleController
+    public class BattleController : Controller
     {
         private readonly IBattleService _battleService;
         public BattleController(IBattleService battleService)
@@ -17,10 +17,10 @@ namespace AlphaFleet.Controllers
         public async Task<IActionResult> Index(string? search)
         {
             IEnumerable<Battle> battles = await _battleService.GetAllBattlesAsync(search);
-            ViewData["CurrentSerach"] = search;
+            ViewData["CurrentSearch"] = search;
             return View(battles);
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             Battle? battle = await _battleService.GetBattleByIdAsync(id);

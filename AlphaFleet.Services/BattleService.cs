@@ -22,7 +22,7 @@ namespace AlphaFleet.Services
                 string term = search.Trim().ToLower();
                 query = query.Where(b =>
                     b.AttackingFleet.Name.ToLower().Contains(term) ||
-                    b.DefendingStation.Name.ToLower().Contains(term)
+                    b.DefendingStation.Name.ToLower().Contains(term));
             }
             return await query.OrderByDescending(b => b.StartTime).ToListAsync();
         }
