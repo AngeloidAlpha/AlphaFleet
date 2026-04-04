@@ -26,7 +26,7 @@ namespace AlphaFleet.Controllers
             Battle? battle = await _battleService.GetBattleByIdAsync(id);
             if (battle == null)
             {
-                return View("BadRequest");
+                return NotFound();
             }
             return View(battle);
         }

@@ -1,4 +1,6 @@
-﻿namespace AlphaFleet.Common
+﻿using System.Reflection.Metadata;
+
+namespace AlphaFleet.Common
 {
     public static class EntityValidation
     {
@@ -35,5 +37,9 @@
         public const int BattleDamageMinValue = 0;
         public const int BattleDamageMaxValue = 2147483647;
         public const int BattleDescriptionMaxLength = 5000;
+        public const int BattleMaxTurns = 15;
+
+        /* Battle Turn */
+        public const int BattleTrunNotesMaxLength = 2000;
     }
 }
