@@ -4,6 +4,7 @@ using AlphaFleet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaFleet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260402195755_AddStationEntity")]
+    partial class AddStationEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,58 +163,6 @@ namespace AlphaFleet.Data.Migrations
                             ImageUrl = "/images/admirals/petrov.jpg",
                             LastName = "Petrov",
                             Rank = 2
-                        });
-                });
-
-            modelBuilder.Entity("AlphaFleet.Data.Models.Battle", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AttackingFleetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("DamageDealt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<Guid>("DefendingStationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Outcome")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttackingFleetId");
-
-                    b.HasIndex("DefendingStationId");
-
-                    b.ToTable("Battles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f1e2d3c4-b5a6-7890-1234-56789abcdef0"),
-                            AttackingFleetId = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"),
-                            DamageDealt = 2500,
-                            DefendingStationId = new Guid("a1b2c3d4-e5f6-7890-1234-56789abcdef0"),
-                            Description = "Alpha Fleet successfully captured Orion Outpost.",
-                            EndTime = new DateTime(2026, 4, 1, 14, 0, 0, 0, DateTimeKind.Utc),
-                            Outcome = 1,
-                            StartTime = new DateTime(2026, 4, 1, 12, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -711,25 +662,6 @@ namespace AlphaFleet.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Fleet");
-                });
-
-            modelBuilder.Entity("AlphaFleet.Data.Models.Battle", b =>
-                {
-                    b.HasOne("AlphaFleet.Data.Models.Fleet", "AttackingFleet")
-                        .WithMany()
-                        .HasForeignKey("AttackingFleetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AlphaFleet.Data.Models.Station", "DefendingStation")
-                        .WithMany()
-                        .HasForeignKey("DefendingStationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AttackingFleet");
-
-                    b.Navigation("DefendingStation");
                 });
 
             modelBuilder.Entity("AlphaFleet.Data.Models.Ship", b =>

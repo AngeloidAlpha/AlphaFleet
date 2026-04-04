@@ -13,6 +13,8 @@ namespace AlphaFleet.Data
         public virtual DbSet<Ship> Ships { get; set; }
         public virtual DbSet<Fleet> Fleets { get; set; }
         public virtual DbSet<Admiral> Admirals { get; set; }
+        public virtual DbSet<Station> Stations { get; set; }
+        public virtual DbSet<Battle> Battles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

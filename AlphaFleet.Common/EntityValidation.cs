@@ -1,4 +1,6 @@
-﻿namespace AlphaFleet.Common
+﻿using System.Reflection.Metadata;
+
+namespace AlphaFleet.Common
 {
     public static class EntityValidation
     {
@@ -20,5 +22,24 @@
         public const int AdmiralNameMinLength = 2;
         public const int AdmiralNameMaxLength = 100;
         public const int AdmiralBioMaxLength = 3000;
+
+        /* Stations */
+        public const int StationNameMinLength = 2;
+        public const int StationNameMaxLength = 100;
+        public const int StationLocationMinLength = 3;
+        public const int StationLocationMaxLength = 100;
+        public const int StationDescriptionMinLength = 10;
+        public const int StationDescriptionMaxLength = 5000;
+        public const int StationHealthMinValue = 0;
+        public const int StationHealthMaxValue = 10000;
+
+        /* Battle */
+        public const int BattleDamageMinValue = 0;
+        public const int BattleDamageMaxValue = 2147483647;
+        public const int BattleDescriptionMaxLength = 5000;
+        public const int BattleMaxTurns = 15;
+
+        /* Battle Turn */
+        public const int BattleTrunNotesMaxLength = 2000;
     }
 }

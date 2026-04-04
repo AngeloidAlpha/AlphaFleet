@@ -7,7 +7,6 @@ namespace AlphaFleet.Data.Configuration
 {
     public class ShipEntityTypeConfiguratuion : IEntityTypeConfiguration<Ship>
     {
-        // Seed data defined once at type level so it's not recreated every time Configure is called.
         private readonly Ship[] SeedShips = new[]
         {
             new Ship { Id = new Guid("f47ac10b-58cc-4372-a567-0e02b2c3d479"), Name = "Vanguard", Class = "Interceptor", ShipProductionYear = 2225, ShipHullClass = ShipHullClass.Interceptor, Rarity = ShipRarity.Common, ImageUrl = "/images/ships/vanguard.jpg", History = "The Vanguard was the first interceptor-class vessel produced by the Sol Shipyards in 2225. Originally designed for rapid reconnaissance missions, it quickly became the backbone of Alpha Fleet's patrol operations. Its lightweight frame and advanced sensor array made it ideal for early-warning deployments along the outer rim.", FleetId = new Guid("c8b02d34-76f8-4dbd-942e-2d680d5b84ef"), IsAvailable = true },
@@ -36,8 +35,6 @@ namespace AlphaFleet.Data.Configuration
 
             builder.Property(s => s.History)
                 .HasMaxLength(Common.EntityValidation.ShipDescriptionMaxLength);
-
-            // Use EF Core's HasData for model seeding
             builder.HasData(SeedShips);
         }
     }

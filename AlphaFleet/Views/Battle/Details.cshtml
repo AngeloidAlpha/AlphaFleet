@@ -1,0 +1,74 @@
+﻿@model AlphaFleet.Data.Models.Battle
+
+@{
+    ViewData["Title"] = $"Battle on {Model.StartTime.ToString("g")}";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Start Time</dt>
+                <dd class="col-sm-8">@Model.StartTime.ToString("g")</dd>
+
+                <dt class="col-sm-4">End Time</dt>
+                <dd class="col-sm-8">@(Model.EndTime?.ToString("g") ?? "Ongoing")</dd>
+
+                <dt class="col-sm-4">Attacking Fleet</dt>
+                <dd class="col-sm-8">
+                    <a asp-controller="Fleet" asp-action="Details" asp-route-id="@Model.AttackingFleetId">
+                        @Model.AttackingFleet.Name
+                    </a>
+                </dd>
+
+                <dt class="col-sm-4">Defending Station</dt>
+                <dd class="col-sm-8">
+                    <a asp-controller="Station" asp-action="Details" asp-route-id="@Model.DefendingStationId">
+                        @Model.DefendingStation.Name
+                    </a>
+                </dd>
+
+                <dt class="col-sm-4">Outcome</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-@GetOutcomeColor(Model.Outcome)">@Model.Outcome</span>
+                </dd>
+
+                <dt class="col-sm-4">Damage Dealt</dt>
+                <dd class="col-sm-8">@Model.DamageDealt</dd>
+            </dl>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">📜 Battle Description</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Model.Description</p>
+            </div>
+        </div>
+    }
+
+    <div class="d-flex gap-2 mt-3">
+        <a class="btn btn-secondary" asp-controller="Battle" asp-action="Index">← Back to All Battles</a>
+        <!-- TODO: Add Edit or other actions when implemented -->
+    </div>
+</div>
+
+@functions {
+    private string GetOutcomeColor(AlphaFleet.Data.Models.Enums.BattleOutcome outcome)
+    {
+        return outcome switch
+        {
+            AlphaFleet.Data.Models.Enums.BattleOutcome.Victory => "success",
+            AlphaFleet.Data.Models.Enums.BattleOutcome.Defeat => "danger",
+            AlphaFleet.Data.Models.Enums.BattleOutcome.Draw => "warning",
+            AlphaFleet.Data.Models.Enums.BattleOutcome.Ongoing => "info",
+            _ => "dark"
+        };
+    }
+}

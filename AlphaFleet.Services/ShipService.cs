@@ -13,7 +13,8 @@ namespace AlphaFleet.Services
         {
             _dbContext = dbContext;
         }
-
+        // TODO: Implement caching for GetAllShipsAsync and GetShipByIdAsync to improve performance, especially for frequently accessed data. Consider using MemoryCache or a distributed cache like Redis for scalability.
+        // TODO: Add logging to all methods to track operations and errors. Use ILogger<ShipService> for structured logging and include relevant information such as ship IDs and operation types.
         // 1. Get all ships with optional search filter
         public async Task<IEnumerable<Ship>> GetAllShipsAsync(string? search)
         {
