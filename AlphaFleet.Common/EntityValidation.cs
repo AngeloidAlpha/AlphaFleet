@@ -40,6 +40,6 @@ namespace AlphaFleet.Common
         public const int BattleMaxTurns = 15;
 
         /* Battle Turn */
-        public const int BattleTrunNotesMaxLength = 2000;
+        public const int BattleTurnNotesMaxLength = 2000;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AlphaFleet.Data.Models;
-using AlphaFleet.Data.Models.Enums;
 
 namespace AlphaFleet.Services
 {
@@ -10,6 +9,10 @@ namespace AlphaFleet.Services
         Task CreateBattleAsync(Battle battle);
         Task UpdateBattleAsync(Battle battle);
         Task DeleteBattleAsync(Guid id);
-        Task<BattleOutcome> SimulateBattleAsync(Guid attackerShipId, Guid defenderShipId); // for game logic
+
+        /// Simulates a turn-based battle (max 15 turns). Returns the saved Battle with its full turn log.
+        /// TODO: Add support for multiple attacking and defending fleets (many-to-many).
+        /// TODO: Implement per-ship stats (attack rolls, accuracy, crits, ship destruction mid-battle).
+        Task<Battle> SimulateBattleAsync(Guid attackingFleetId, Guid defendingFleetId, Guid defendingStationId);
     }
 }

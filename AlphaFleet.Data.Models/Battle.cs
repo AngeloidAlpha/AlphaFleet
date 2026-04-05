@@ -15,8 +15,14 @@ namespace AlphaFleet.Data.Models
         public Guid AttackingFleetId { get; set; }
         public virtual Fleet AttackingFleet { get; set; } = null!;
 
+        // Nullable so the migration column allows NULL for pre-existing rows
+        [ForeignKey(nameof(DefendingFleet))]
+        public Guid? DefendingFleetId { get; set; }
+        public virtual Fleet? DefendingFleet { get; set; }
+
+        [Required]
         [ForeignKey(nameof(DefendingStation))]
-        public Guid? DefendingStationId { get; set; }
+        public Guid DefendingStationId { get; set; }
         public virtual Station DefendingStation { get; set; } = null!;
 
         [Required]
@@ -28,6 +34,7 @@ namespace AlphaFleet.Data.Models
 
         [Range(BattleDamageMinValue, BattleDamageMaxValue)]
         public int DamageDealt { get; set; } = 0;
+
         [Required]
         public int TurnsPlayed { get; set; } = 0;
 
