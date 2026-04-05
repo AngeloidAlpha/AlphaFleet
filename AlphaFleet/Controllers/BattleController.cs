@@ -9,9 +9,13 @@ namespace AlphaFleet.Controllers
     public class BattleController : Controller
     {
         private readonly IBattleService _battleService;
-        public BattleController(IBattleService battleService)
+        private readonly IFleetService _fleetService;
+        private readonly IStationService _stationService;
+        public BattleController(IBattleService battleService, IFleetService fleetService, IStationService stationService)
         {
             _battleService = battleService;
+            _fleetService = fleetService;
+            _stationService = stationService;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string? search)
