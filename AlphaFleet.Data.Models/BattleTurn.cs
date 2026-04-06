@@ -8,17 +8,22 @@ namespace AlphaFleet.Data.Models
     {
         [Key]
         public Guid Id { get; set; }
+
         [Required]
         [ForeignKey(nameof(Battle))]
         public Guid BattleId { get; set; }
         public virtual Battle Battle { get; set; } = null!;
+
         [Required]
         public int TurnNumber { get; set; }
+
         [Required]
-        public int DamageDealt{ get; set; }
+        public int DamageDealt { get; set; }
+
         [Required]
         public int DefenderRemainingHealth { get; set; }
-        [MaxLength(BattleTrunNotesMaxLength)]
+
+        [MaxLength(BattleTurnNotesMaxLength)]
         public string? Notes { get; set; }
     }
 }

@@ -40,7 +40,8 @@ namespace AlphaFleet.Data.Models
 
         [MaxLength(BattleDescriptionMaxLength)]
         public string? Description { get; set; }
-        // Turn by turn log of the battle.
+
+        // Turn-by-turn battle log
         public virtual ICollection<BattleTurn> BattleTurns { get; set; } = new HashSet<BattleTurn>();
     }
 }
