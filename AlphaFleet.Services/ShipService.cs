@@ -13,8 +13,10 @@ namespace AlphaFleet.Services
         {
             _dbContext = dbContext;
         }
+
         // TODO: Implement caching for GetAllShipsAsync and GetShipByIdAsync to improve performance, especially for frequently accessed data. Consider using MemoryCache or a distributed cache like Redis for scalability.
         // TODO: Add logging to all methods to track operations and errors. Use ILogger<ShipService> for structured logging and include relevant information such as ship IDs and operation types.
+
         // 1. Get all ships with optional search filter
         public async Task<IEnumerable<Ship>> GetAllShipsAsync(string? search)
         {
@@ -40,7 +42,7 @@ namespace AlphaFleet.Services
                 .ToListAsync();
         }
 
-        // Get a single ship by ID
+        // 2. Get a single ship by ID
         public async Task<Ship?> GetShipByIdAsync(Guid id)
         {
             return await _dbContext
@@ -50,16 +52,18 @@ namespace AlphaFleet.Services
                 .SingleOrDefaultAsync(s => s.Id == id);
         }
 
-        // Create a new ship
+        // 3. Create a new ship — stats are derived from hull class and rarity
         public async Task CreateShipAsync(Ship ship)
         {
+            ShipStatsHelper.ApplyStats(ship);
             _dbContext.Ships.Add(ship);
             await _dbContext.SaveChangesAsync();
         }
 
-        // Update an existing ship
+        // 4. Update an existing ship — recalculate stats in case hull class or rarity changed
         public async Task UpdateShipAsync(Ship ship)
         {
+            ShipStatsHelper.ApplyStats(ship);
             _dbContext.Ships.Update(ship);
             await _dbContext.SaveChangesAsync();
         }

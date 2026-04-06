@@ -16,7 +16,7 @@ namespace AlphaFleet.Common
         public const int ShipDefenseMinValue = 0;
         public const int ShipDefenseMaxValue = 10000;
         public const int ShipHealthMinValue = 1;
-        public const int ShipHealthMaxValue = 10000;
+        public const int ShipHealthMaxValue = 50000;
 
         /* Fleets */
         public const int FleetNameMinLength = 3;
@@ -41,7 +41,7 @@ namespace AlphaFleet.Common
 
         /* Battle */
         public const int BattleDamageMinValue = 0;
-        public const int BattleDamageMaxValue = 2147483647;
+        public const int BattleDamageMaxValue = 2000000000;
         public const int BattleDescriptionMaxLength = 5000;
         public const int BattleMaxTurns = 15;
 
