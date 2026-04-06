@@ -1,7 +1,9 @@
 ﻿using AlphaFleet.Data.Models;
 using AlphaFleet.Services;
+using AlphaFleet.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AlphaFleet.Controllers
 {
@@ -34,12 +36,40 @@ namespace AlphaFleet.Controllers
             }
             return View(battle);
         }
+        [HttpGet]
+        public async Task<IActionResult> InitiateBattle()
+        {
+            var model = await BuildInitiateViewModelAsync();
+            return View(model);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> InitiateBattle(Guid attackingFleetID, Guid defendingStationId)
+        public async Task<IActionResult> InitiateBattle(InitiateBattleViewModel model)
         {
-            var outcome = await _battleService.SimulateBattleAsync(attackingFleetID, defendingStationId);
-            return Json(new { outcome = outcome.ToString() });
+            if (!ModelState.IsValid)
+            {
+                var rebuilt = await BuildInitiateViewModelAsync();
+                model.FleetOptions = rebuilt.FleetOptions;
+                model.StationOptions = rebuilt.StationOptions;
+                return View(model);
+            }
+            var battle = await _battleService.SimulateBattleAsync(
+                model.AttackingFleetId!.Value,
+                model.DefendingFleetId!.Value,
+                model.DefendingStationId!.Value);
+
+            return RedirectToAction(nameof(Details), new { id = battle.Id });
+        }
+        private async Task<InitiateBattleViewModel> BuildInitiateViewModelAsync()
+        {
+            var fleets = await _fleetService.GetAllFleetsAsync(null);
+            var stations = await _stationService.GetAllStationAsync(null);
+
+            return new InitiateBattleViewModel
+            {
+                FleetOptions = fleets.Select(f => new SelectListItem(f.Name, f.Id.ToString())),
+                StationOptions = stations.Select(s => new SelectListItem(s.Name, s.Id.ToString()))
+            };
         }
     }
 }
