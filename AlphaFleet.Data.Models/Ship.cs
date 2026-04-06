@@ -13,7 +13,7 @@ namespace AlphaFleet.Data.Models
         [Required]
         [MinLength(ShipNameMinLength)]
         [MaxLength(ShipNameMaxLength)]
-        public string Name { get; set; } =null!;
+        public string Name { get; set; } = null!;
         [Required]
         public string Class { get; set; } = null!;
         [Required]
@@ -30,6 +30,20 @@ namespace AlphaFleet.Data.Models
         [ForeignKey(nameof(Fleet))]
         public Guid FleetId { get; set; }
         public bool IsAvailable { get; set; }
+
+        // New stat properties
+        [Required]
+        [Range(ShipAttackMinValue, ShipAttackMaxValue)]
+        public int Attack { get; set; } = 10;  // Default base value
+
+        [Required]
+        [Range(ShipDefenseMinValue, ShipDefenseMaxValue)]
+        public int Defense { get; set; } = 1;  // Reduces incoming damage
+
+        [Required]
+        [Range(ShipHealthMinValue, ShipHealthMaxValue)]
+        public int Health { get; set; } = 50;  // HP pool for the ship
+
         [JsonIgnore]
         public virtual Fleet Fleet { get; set; } = null!;
     }

@@ -86,24 +86,22 @@ namespace AlphaFleet.Services
             if (attackingFleet == null || defendingFleet == null || station == null)
                 throw new InvalidOperationException("Invalid fleet or station selection.");
 
-            // Attack power: sum of each ship's rarity value * 100
-            // TODO: Replace with per-ship Attack stat for complex logic
-            int attackPower = attackingFleet.Ships.Sum(s => (int)s.Rarity * 100);
+            // Attack power: sum of each ship's Attack stat
+            int attackPower = attackingFleet.Ships.Sum(s => s.Attack);
 
-            // Defender HP: combined fleet power + station health
-            // TODO: Replace fleet portion with per-ship HP stat; add station shield layers
-            int remainingHp = defendingFleet.Ships.Sum(s => (int)s.Rarity * 100) + station.Health;
+            // Defender HP: combined fleet HP + station health
+            int remainingHp = defendingFleet.Ships.Sum(s => s.Health) + station.Health;
 
             int totalDamage = 0;
             int turnsPlayed = 0;
-            BattleOutcome outcome = BattleOutcome.Draw; // Default if 15 turns expire
+            BattleOutcome outcome = BattleOutcome.Draw;
             var turns = new List<BattleTurn>();
 
             for (int turn = 1; turn <= EntityValidation.BattleMaxTurns; turn++)
             {
                 turnsPlayed = turn;
-                int damage = Math.Max(0, Math.Min(attackPower, remainingHp));
-                remainingHp -= attackPower;
+                int damage = Math.Max(0, attackPower);  // Damage per turn is the total attack power
+                remainingHp -= damage;
                 totalDamage += damage;
 
                 turns.Add(new BattleTurn
@@ -116,13 +114,12 @@ namespace AlphaFleet.Services
                             $"Defender HP remaining: {Math.Max(remainingHp, 0):N0}"
                 });
 
-                if (remainingHp <= 0)
+                if (remainingHp <= 0)   
                 {
                     outcome = BattleOutcome.Victory;
                     break;
                 }
             }
-            // If the loop completes without hitting the break, outcome stays Draw
 
             Battle battle = new Battle
             {

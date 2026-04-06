@@ -11,6 +11,12 @@ namespace AlphaFleet.Common
         public const int ShipDescriptionMaxLength = 5000;
         public const int ShipProductionYearMinValue = 2200;
         public const int ShipProductionYearMaxValue = 5001;
+        public const int ShipAttackMinValue = 0;
+        public const int ShipAttackMaxValue = 10000;
+        public const int ShipDefenseMinValue = 0;
+        public const int ShipDefenseMaxValue = 10000;
+        public const int ShipHealthMinValue = 1;
+        public const int ShipHealthMaxValue = 10000;
 
         /* Fleets */
         public const int FleetNameMinLength = 3;
