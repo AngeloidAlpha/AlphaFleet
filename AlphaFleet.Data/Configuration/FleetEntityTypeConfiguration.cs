@@ -24,6 +24,16 @@ namespace AlphaFleet.Data.Configuration
             entity.HasKey(f => f.Id);
             entity.Property(f => f.Name).IsRequired();
             entity.Property(f => f.Location).IsRequired();
+
+            // One user → one fleet.
+            entity.HasOne<ApplicationUser>()
+                  .WithMany()
+                  .HasForeignKey(f => f.UserId)
+                  .IsRequired(false)
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(f => f.UserId).IsUnique(false);
+
             entity.HasData(SeedFleets);
         }
     }

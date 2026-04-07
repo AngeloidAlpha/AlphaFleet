@@ -45,5 +45,27 @@ namespace AlphaFleet.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(f => f.Id == id);
         }
+
+        public async Task<Fleet?> GetUserFleetAsync(string userId)
+        {
+            return await _dbContext
+                .Fleets
+                .Include(f => f.Ships)
+                .Include(f => f.Admiral)
+                .AsSplitQuery()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(f => f.UserId == userId);
+        }
+
+        public async Task<bool> UserHasFleetAsync(string userId)
+        {
+            return await _dbContext.Fleets.AnyAsync(f => f.UserId == userId);
+        }
+
+        public async Task CreateFleetAsync(Fleet fleet)
+        {
+            _dbContext.Fleets.Add(fleet);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

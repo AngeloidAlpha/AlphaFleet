@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using static AlphaFleet.Common.EntityValidation;
 
-namespace AlphaFleet.Data.Models
+namespace AlphaFleet.ViewModels
 {
-    using static Common.EntityValidation;
-    public class Fleet
+    public class FleetFormViewModel
     {
-        [Key]
-        public Guid Id { get; set; }
         [Required]
         [MinLength(FleetNameMinLength)]
         [MaxLength(FleetNameMaxLength)]
@@ -16,8 +13,5 @@ namespace AlphaFleet.Data.Models
         [MinLength(FleetLocationNameMinLength)]
         [MaxLength(FleetLocationNameMaxLength)]
         public string Location { get; set; } = null!;
-        public string? UserId { get; set; }
-        public virtual ICollection<Ship> Ships { get; set; } = new HashSet<Ship>();
-        public virtual Admiral? Admiral { get; set; }
     }
 }

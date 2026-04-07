@@ -9,5 +9,10 @@ namespace AlphaFleet.Services
     {
         Task<IEnumerable<Fleet>> GetAllFleetsAsync(string? search);
         Task<Fleet?> GetFleetByIdAsync(Guid id);
+        Task<Fleet?> GetUserFleetAsync(string userId);
+
+        Task<bool> UserHasFleetAsync(string userId);
+
+        Task CreateFleetAsync(Fleet fleet);
     }
 }
