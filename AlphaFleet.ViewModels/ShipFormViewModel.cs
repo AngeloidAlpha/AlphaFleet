@@ -11,8 +11,7 @@ namespace AlphaFleet.Data.Models.ViewModels
         [MaxLength(ShipNameMaxLength)]
         public string Name { get; set; } = null!;
 
-        [Required]
-        public string Class { get; set; } = null!;
+        // Class is intentionally absent — it is derived from ShipHullClass in the controller.
 
         [Required]
         public ShipHullClass ShipHullClass { get; set; }
@@ -20,7 +19,8 @@ namespace AlphaFleet.Data.Models.ViewModels
         public ShipRarity Rarity { get; set; }
 
         [Required]
-        [Range(ShipProductionYearMinValue, ShipProductionYearMaxValue, ErrorMessage = "Production year must be between {1} and {2}.")]
+        [Range(ShipProductionYearMinValue, ShipProductionYearMaxValue,
+               ErrorMessage = "Production year must be between {1} and {2}.")]
         public int ShipProductionYear { get; set; }
 
         public string? ImageUrl { get; set; }

@@ -22,20 +22,17 @@ namespace AlphaFleet.Controllers
         public async Task<IActionResult> Index(string? search)
         {
             IEnumerable<Ship> allShips = await _shipService.GetAllShipsAsync(search);
-
             ViewData["CurrentSearch"] = search;
-            return this.View(allShips);
+            return View(allShips);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             Ship? ship = await _shipService.GetShipByIdAsync(id);
-            if (ship == null)
-            {
-                return this.View("BadRequest");
-            }
-            return this.View(ship);
+            if (ship == null) 
+                return View("BadRequest");
+            return View(ship);
         }
 
         [HttpGet]
@@ -45,7 +42,7 @@ namespace AlphaFleet.Controllers
             {
                 Fleets = await _shipService.GetAllFleetsAsync()
             };
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -63,13 +60,13 @@ namespace AlphaFleet.Controllers
             if (!ModelState.IsValid)
             {
                 model.Fleets = await _shipService.GetAllFleetsAsync();
-                return this.View(model);
+                return View(model);
             }
 
             var ship = new Ship
             {
                 Name = model.Name,
-                Class = model.Class,
+                Class = model.ShipHullClass.ToString(),
                 ShipHullClass = model.ShipHullClass,
                 Rarity = model.Rarity,
                 ShipProductionYear = model.ShipProductionYear,
@@ -80,7 +77,6 @@ namespace AlphaFleet.Controllers
             };
 
             await _shipService.CreateShipAsync(ship);
-
             return RedirectToAction("Details", new { id = ship.Id });
         }
 
@@ -88,15 +84,12 @@ namespace AlphaFleet.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             Ship? ship = await _shipService.GetShipByIdAsync(id);
-            if (ship == null)
-            {
-                return this.View("BadRequest");
-            }
+            if (ship == null) 
+                return View("BadRequest");
 
             var model = new ShipFormViewModel
             {
                 Name = ship.Name,
-                Class = ship.Class,
                 ShipHullClass = ship.ShipHullClass,
                 Rarity = ship.Rarity,
                 ShipProductionYear = ship.ShipProductionYear,
@@ -108,7 +101,7 @@ namespace AlphaFleet.Controllers
             };
 
             ViewData["ShipId"] = id;
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -119,27 +112,24 @@ namespace AlphaFleet.Controllers
             {
                 model.Fleets = await _shipService.GetAllFleetsAsync();
                 ViewData["ShipId"] = id;
-                return this.View(model);
+                return View(model);
             }
 
             Ship? ship = await _shipService.GetShipByIdAsync(id);
-            if (ship == null)
-            {
-                return this.View("BadRequest");
-            }
+            if (ship == null) 
+                return View("BadRequest");
 
             ship.Name = model.Name;
-            ship.Class = model.Class;
+            ship.Class = model.ShipHullClass.ToString();
             ship.ShipHullClass = model.ShipHullClass;
             ship.Rarity = model.Rarity;
             ship.ShipProductionYear = model.ShipProductionYear;
-            ship.ImageUrl = model.ImageUrl ?? string.Empty;
+            ship.ImageUrl= model.ImageUrl ?? string.Empty;
             ship.History = model.History ?? string.Empty;
             ship.FleetId = model.FleetId;
             ship.IsAvailable = model.IsAvailable;
 
             await _shipService.UpdateShipAsync(ship);
-
             return RedirectToAction("Details", new { id = ship.Id });
         }
 
@@ -147,12 +137,8 @@ namespace AlphaFleet.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             Ship? ship = await _shipService.GetShipByIdAsync(id);
-            if (ship == null)
-            {
-                return this.View("BadRequest");
-            }
-
-            return this.View(ship);
+            if (ship == null) return View("BadRequest");
+            return View(ship);
         }
 
         [HttpPost]
