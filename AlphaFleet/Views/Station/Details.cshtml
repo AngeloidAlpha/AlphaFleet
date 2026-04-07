@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = Model.Name;
+    string imageUrl = string.IsNullOrEmpty(Model.ImageUrl)
+        ? "/images/stations/default.png"
+        : Model.ImageUrl;
 }
 
 <div class="container mt-5">
@@ -9,13 +12,10 @@
 
     <div class="card">
         <div class="row g-0">
-            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-            {
-                <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
-                    <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 300px;" />
-                </div>
-            }
-            <div class="col-md-@(string.IsNullOrEmpty(Model.ImageUrl) ? "12" : "8")">
+            <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                <img src="@imageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 300px;" />
+            </div>
+            <div class="col-md-8">
                 <div class="card-body">
                     <dl class="row">
                         <dt class="col-sm-4">Name</dt>
@@ -26,9 +26,6 @@
 
                         <dt class="col-sm-4">Description</dt>
                         <dd class="col-sm-8">@Model.Description</dd>
-
-                        <dt class="col-sm-4">Health</dt>
-                        <dd class="col-sm-8">@Model.Health</dd>
 
                         <dt class="col-sm-4">Status</dt>
                         <dd class="col-sm-8">
@@ -47,9 +44,31 @@
         </div>
     </div>
 
+    <!-- Combat Stats -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">🏛️ Station Combat Statistics</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-4">
+                    <div class="display-6 text-danger">@Model.Attack</div>
+                    <small class="text-muted">Attack</small>
+                </div>
+                <div class="col-4">
+                    <div class="display-6 text-primary">@Model.Defense</div>
+                    <small class="text-muted">Defense</small>
+                </div>
+                <div class="col-4">
+                    <div class="display-6 text-success">@Model.Health</div>
+                    <small class="text-muted">Health</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex gap-2 mt-3">
         <a class="btn btn-secondary" asp-controller="Station" asp-action="Index">← Back to All Stations</a>
-        <!-- TODO: Add Edit and Delete action links when implemented -->
     </div>
 </div>
 

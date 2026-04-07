@@ -7,7 +7,6 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">@ViewData["Title"]</h1>
-        <!-- TODO: Add Create action link when implemented -->
     </div>
 
     <form asp-controller="Station" asp-action="Index" method="get" class="mb-4">
@@ -24,15 +23,12 @@
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info">
             @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
             {
                 <span>No stations found matching "<strong>@ViewData["CurrentSearch"]</strong>".</span>
             }
-            else
-            {
-                <span>No stations found.</span>
-            }
+            else { <span>No stations found.</span> }
         </div>
     }
     else
@@ -44,8 +40,9 @@
                         <th>Image</th>
                         <th>Name</th>
                         <th>Location</th>
-                        <th>Description</th>
-                        <th>Health</th>
+                        <th>⚔️ Atk</th>
+                        <th>🛡️ Def</th>
+                        <th>❤️ HP</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -55,14 +52,8 @@
                     {
                         <tr>
                             <td>
-                                @if (!string.IsNullOrEmpty(station.ImageUrl))
-                                {
-                                    <img src="@station.ImageUrl" alt="@station.Name" style="width: 40px; height: 40px; border-radius: 5px;" />
-                                }
-                                else
-                                {
-                                    <span class="text-muted">—</span>
-                                }
+                                <img src="@(string.IsNullOrEmpty(station.ImageUrl) ? "/images/stations/default.png" : station.ImageUrl)"
+                                     alt="@station.Name" style="width:40px;height:40px;border-radius:5px;object-fit:cover;" />
                             </td>
                             <td>
                                 <a asp-controller="Station" asp-action="Details" asp-route-id="@station.Id">
@@ -70,8 +61,9 @@
                                 </a>
                             </td>
                             <td>@station.Location</td>
-                            <td>@station.Description</td>
-                            <td>@station.Health</td>
+                            <td class="text-danger fw-bold">@station.Attack</td>
+                            <td class="text-primary fw-bold">@station.Defense</td>
+                            <td class="text-success fw-bold">@station.Health</td>
                             <td>
                                 @if (!station.IsDestroyed)
                                 {
@@ -83,7 +75,8 @@
                                 }
                             </td>
                             <td>
-                                <!-- TODO: Add Edit and Delete action links when implemented -->
+                                <a asp-controller="Station" asp-action="Details" asp-route-id="@station.Id"
+                                   class="btn btn-sm btn-outline-info">🔍 Details</a>
                             </td>
                         </tr>
                     }

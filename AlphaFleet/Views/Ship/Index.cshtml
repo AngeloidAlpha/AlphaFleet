@@ -12,7 +12,7 @@
 
     <form asp-controller="Ship" asp-action="Index" method="get" class="mb-4">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by name or class..."
+            <input type="text" name="search" class="form-control" placeholder="Search by name or hull class..."
                    value="@ViewData["CurrentSearch"]" />
             <button type="submit" class="btn btn-primary">🔍 Search</button>
             @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
@@ -24,7 +24,7 @@
 
     @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info">
             @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
             {
                 <span>No ships found matching "<strong>@ViewData["CurrentSearch"]</strong>".</span>
@@ -43,10 +43,11 @@
                     <tr>
                         <th>Image</th>
                         <th>Name</th>
-                        <th>Class</th>
                         <th>Hull Class</th>
                         <th>Rarity</th>
-                        <th>Production Year</th>
+                        <th>⚔️ Atk</th>
+                        <th>🛡️ Def</th>
+                        <th>❤️ HP</th>
                         <th>Fleet</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -57,28 +58,21 @@
                     {
                         <tr>
                             <td>
-                                @if (!string.IsNullOrEmpty(ship.ImageUrl))
-                                {
-                                    <img src="@ship.ImageUrl" alt="@ship.Name" style="width: 40px; height: 40px; border-radius: 5px;" />
-                                }
-                                else
-                                {
-                                    <span class="text-muted">—</span>
-                                }
+                                <img src="@(string.IsNullOrEmpty(ship.ImageUrl) ? "/images/ships/default.png" : ship.ImageUrl)"
+                                     alt="@ship.Name" style="width: 40px; height: 40px; border-radius: 5px; object-fit: cover;" />
                             </td>
                             <td>
                                 <a asp-controller="Ship" asp-action="Details" asp-route-id="@ship.Id">
                                     <strong>@ship.Name</strong>
                                 </a>
                             </td>
-                            <td>@ship.Class</td>
                             <td>@ship.ShipHullClass</td>
                             <td>
-                                <span class="badge bg-@GetRarityColor(ship.Rarity)">
-                                    @ship.Rarity
-                                </span>
+                                <span class="badge bg-@GetRarityColor(ship.Rarity)">@ship.Rarity</span>
                             </td>
-                            <td>@ship.ShipProductionYear</td>
+                            <td class="text-danger fw-bold">@ship.Attack</td>
+                            <td class="text-primary fw-bold">@ship.Defense</td>
+                            <td class="text-success fw-bold">@ship.Health</td>
                             <td>
                                 <a asp-controller="Fleet" asp-action="Details" asp-route-id="@ship.FleetId">
                                     @ship.Fleet.Name
@@ -107,15 +101,12 @@
 </div>
 
 @functions {
-    private string GetRarityColor(AlphaFleet.Data.Models.Enums.ShipRarity rarity)
+    private string GetRarityColor(AlphaFleet.Data.Models.Enums.ShipRarity rarity) => rarity switch
     {
-        return rarity switch
-        {
-            AlphaFleet.Data.Models.Enums.ShipRarity.Common => "secondary",
-            AlphaFleet.Data.Models.Enums.ShipRarity.Rare => "info",
-            AlphaFleet.Data.Models.Enums.ShipRarity.Epic => "warning",
-            AlphaFleet.Data.Models.Enums.ShipRarity.Legendary => "danger",
-            _ => "dark"
-        };
-    }
+        AlphaFleet.Data.Models.Enums.ShipRarity.Common    => "secondary",
+        AlphaFleet.Data.Models.Enums.ShipRarity.Rare      => "info",
+        AlphaFleet.Data.Models.Enums.ShipRarity.Epic      => "warning",
+        AlphaFleet.Data.Models.Enums.ShipRarity.Legendary => "danger",
+        _ => "dark"
+    };
 }
