@@ -1,0 +1,35 @@
+﻿@model AlphaFleet.ViewModels.FleetFormViewModel
+
+@{
+    ViewData["Title"] = "Create Your Fleet";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <h1 class="mb-4">🚀 @ViewData["Title"]</h1>
+    <p class="text-muted">Every commander needs a fleet. Give yours a name and a home base.</p>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-controller="Fleet" asp-action="Create" method="post">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Fleet Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Iron Vanguard" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Location" class="form-label">Home Base</label>
+                    <input asp-for="Location" class="form-control" placeholder="e.g. Sol System" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">🚀 Establish Fleet</button>
+                    <a asp-controller="Fleet" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
