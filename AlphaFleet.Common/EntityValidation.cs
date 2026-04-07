@@ -36,8 +36,12 @@ namespace AlphaFleet.Common
         public const int StationLocationMaxLength = 100;
         public const int StationDescriptionMinLength = 10;
         public const int StationDescriptionMaxLength = 5000;
+        public const int StationAttackMinValue = 0;
+        public const int StationAttackMaxValue = 10000;
+        public const int StationDefenseMinValue = 0;
+        public const int StationDefenseMaxValue = 10000;
         public const int StationHealthMinValue = 0;
-        public const int StationHealthMaxValue = 10000;
+        public const int StationHealthMaxValue = 100000; // stations are fortresses
 
         /* Battle */
         public const int BattleDamageMinValue = 0;

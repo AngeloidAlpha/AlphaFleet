@@ -14,14 +14,25 @@ namespace AlphaFleet.Data.Models
         [MinLength(StationNameMinLength)]
         [MaxLength(StationNameMaxLength)]
         public string Name { get; set; }
+
         [Required]
         [MinLength(StationLocationMinLength)]
         [MaxLength(StationLocationMaxLength)]
         public string Location { get; set; }
+
         [Required]
         [MinLength(StationDescriptionMinLength)]
         [MaxLength(StationDescriptionMaxLength)]
         public string Description { get; set; }
+
+        [Required]
+        [Range(StationAttackMinValue, StationAttackMaxValue)]
+        public int Attack { get; set; }
+
+        [Required]
+        [Range(StationDefenseMinValue, StationDefenseMaxValue)]
+        public int Defense { get; set; }
+
         [Required]
         [Range(StationHealthMinValue, StationHealthMaxValue)]
         public int Health { get; set; }
