@@ -1,0 +1,73 @@
+﻿@using AlphaFleet.Data.Models.Enums
+
+@{
+    ViewData["Title"] = "Choose Your Faction";
+    var currentFaction = (Faction)ViewData["CurrentFaction"]!;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-2 text-center">⚔️ Choose Your Faction</h1>
+    <p class="text-center text-muted mb-4">Pledge your allegiance — your faction fights alongside you in every battle.</p>
+
+    @if (TempData["FactionMessage"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["FactionMessage"]</div>
+    }
+
+    @if (currentFaction != Faction.None)
+    {
+        <div class="alert alert-info text-center mb-4">
+            Your current allegiance: <strong>@currentFaction</strong>. You may switch factions below.
+        </div>
+    }
+
+    <form asp-controller="Faction" asp-action="Choose" method="post">
+        <div class="row g-4 justify-content-center">
+
+            <!-- Earthlings -->
+            <div class="col-md-5">
+                <div class="card h-100 border-@(currentFaction == Faction.Earthlings ? "primary border-3" : "secondary")">
+                    <div class="card-body text-center p-4">
+                        <div style="font-size: 4rem;">🌍</div>
+                        <h3 class="card-title mt-2">Earthlings</h3>
+                        <p class="card-text text-muted">
+                            Humanity's original home. The Earthling faction values unity, technology, and the
+                            defense of the inner solar system. Their fleets are disciplined and well-armed.
+                        </p>
+                        @if (currentFaction == Faction.Earthlings)
+                        {
+                            <span class="badge bg-primary fs-6 mb-2">✅ Current Allegiance</span><br />
+                        }
+                        <button type="submit" name="faction" value="@((int)Faction.Earthlings)"
+                                class="btn btn-@(currentFaction == Faction.Earthlings ? "primary" : "outline-primary") mt-2">
+                            Pledge to Earthlings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Martians -->
+            <div class="col-md-5">
+                <div class="card h-100 border-@(currentFaction == Faction.Martians ? "danger border-3" : "secondary")">
+                    <div class="card-body text-center p-4">
+                        <div style="font-size: 4rem;">🔴</div>
+                        <h3 class="card-title mt-2">Martians</h3>
+                        <p class="card-text text-muted">
+                            The colonists who forged their own destiny on the red planet. The Martian faction
+                            prizes independence, cunning, and the expansion of humanity beyond its cradle.
+                        </p>
+                        @if (currentFaction == Faction.Martians)
+                        {
+                            <span class="badge bg-danger fs-6 mb-2">✅ Current Allegiance</span><br />
+                        }
+                        <button type="submit" name="faction" value="@((int)Faction.Martians)"
+                                class="btn btn-@(currentFaction == Faction.Martians ? "danger" : "outline-danger") mt-2">
+                            Pledge to Martians
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
