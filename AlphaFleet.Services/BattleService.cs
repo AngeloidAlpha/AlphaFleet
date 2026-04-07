@@ -86,39 +86,56 @@ namespace AlphaFleet.Services
             if (attackingFleet == null || defendingFleet == null || station == null)
                 throw new InvalidOperationException("Invalid fleet or station selection.");
 
-            // Attack power: sum of each ship's Attack stat
-            int attackPower = attackingFleet.Ships.Sum(s => s.Attack);
+            // Attacker stats
+            int attackPower  = attackingFleet.Ships.Sum(s => s.Attack);
+            int attackerDef  = attackingFleet.Ships.Sum(s => s.Defense);
+            int attackerHp   = attackingFleet.Ships.Sum(s => s.Health);
 
-            // Defender HP: combined fleet HP + station health
-            int remainingHp = defendingFleet.Ships.Sum(s => s.Health) + station.Health;
+            // Defender stats: fleet ships + station combined
+            int defenderDef      = defendingFleet.Ships.Sum(s => s.Defense) + station.Defense;
+            int counterAttack    = defendingFleet.Ships.Sum(s => s.Attack)  + station.Attack;
+            int defenderHp       = defendingFleet.Ships.Sum(s => s.Health)  + station.Health;
+
+            // Net damage per turn (clamped to 0 — defense cannot heal) ────────
+            // TODO: Replace with per-ship accuracy rolls and critical hits later
+            int effectiveDamage = Math.Max(0, attackPower  - defenderDef);
+            int counterDamage   = Math.Max(0, counterAttack - attackerDef);
 
             int totalDamage = 0;
             int turnsPlayed = 0;
-            BattleOutcome outcome = BattleOutcome.Draw;
+            BattleOutcome outcome = BattleOutcome.Draw; // Default if 15 turns expire
             var turns = new List<BattleTurn>();
 
             for (int turn = 1; turn <= EntityValidation.BattleMaxTurns; turn++)
             {
                 turnsPlayed = turn;
-                int damage = Math.Max(0, attackPower);  // Damage per turn is the total attack power
-                remainingHp -= damage;
-                totalDamage += damage;
+
+                // Both sides fire simultaneously each turn
+                defenderHp -= effectiveDamage;
+                attackerHp -= counterDamage;
+                totalDamage += effectiveDamage;
+
+                bool defenderDefeated = defenderHp <= 0;
+                bool attackerDefeated = attackerHp <= 0;
 
                 turns.Add(new BattleTurn
                 {
                     Id = Guid.NewGuid(),
                     TurnNumber = turn,
-                    DamageDealt = damage,
-                    DefenderRemainingHealth = Math.Max(remainingHp, 0),
-                    Notes = $"{attackingFleet.Name} deals {damage:N0} damage. " +
-                            $"Defender HP remaining: {Math.Max(remainingHp, 0):N0}"
+                    DamageDealt = effectiveDamage,
+                    CounterDamageDealt = counterDamage,
+                    AttackerRemainingHealth = Math.Max(attackerHp, 0),
+                    DefenderRemainingHealth = Math.Max(defenderHp, 0),
+                    Notes =
+                        $"⚔️ [{attackingFleet.Name}] ATK {attackPower} − DEF {defenderDef} = {effectiveDamage:N0} dmg dealt. " +
+                        $"🛡️ [{defendingFleet.Name} + {station.Name}] CTR {counterAttack} − DEF {attackerDef} = {counterDamage:N0} dmg dealt. " +
+                        $"| Attacker HP: {Math.Max(attackerHp, 0):N0} | Defender HP: {Math.Max(defenderHp, 0):N0}"
                 });
 
-                if (remainingHp <= 0)   
-                {
-                    outcome = BattleOutcome.Victory;
-                    break;
-                }
+                // Simultaneous destruction → Draw
+                if (defenderDefeated && attackerDefeated) { outcome = BattleOutcome.Draw;    break; }
+                if (defenderDefeated)                     { outcome = BattleOutcome.Victory;  break; }
+                if (attackerDefeated)                     { outcome = BattleOutcome.Defeat;   break; }
             }
 
             Battle battle = new Battle

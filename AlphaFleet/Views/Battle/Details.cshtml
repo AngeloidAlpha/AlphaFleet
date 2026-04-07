@@ -3,10 +3,25 @@
 
 @{
     ViewData["Title"] = "Battle Log";
-    string attackerName   = Model.AttackingFleet?.Name ?? "Unknown";
-    string? defFleetName  = Model.DefendingFleet?.Name;
-    string stationName    = Model.DefendingStation?.Name ?? "Unknown";
-    string defenderLabel  = defFleetName is not null ? $"{defFleetName} + {stationName}" : stationName;
+    string attackerName  = Model.AttackingFleet?.Name ?? "Unknown";
+    string? defFleetName = Model.DefendingFleet?.Name;
+    string stationName   = Model.DefendingStation?.Name ?? "Unknown";
+    string defenderLabel = defFleetName is not null ? $"{defFleetName} + {stationName}" : stationName;
+
+    int attackPower   = Model.AttackingFleet?.Ships.Sum(s => s.Attack)   ?? 0;
+    int attackerDef   = Model.AttackingFleet?.Ships.Sum(s => s.Defense)  ?? 0;
+    int attackerHp    = Model.AttackingFleet?.Ships.Sum(s => s.Health)   ?? 0;
+    int defFleetDef   = Model.DefendingFleet?.Ships.Sum(s => s.Defense)  ?? 0;
+    int defFleetAtk   = Model.DefendingFleet?.Ships.Sum(s => s.Attack)   ?? 0;
+    int defFleetHp    = Model.DefendingFleet?.Ships.Sum(s => s.Health)   ?? 0;
+    int stationAtk    = Model.DefendingStation?.Attack   ?? 0;
+    int stationDef    = Model.DefendingStation?.Defense  ?? 0;
+    int stationHp     = Model.DefendingStation?.Health   ?? 0;
+    int defenderDef   = defFleetDef + stationDef;
+    int counterAttack = defFleetAtk + stationAtk;
+    int defenderHp    = defFleetHp  + stationHp;
+    int effectiveDmg  = Math.Max(0, attackPower   - defenderDef);
+    int counterDmg    = Math.Max(0, counterAttack - attackerDef);
 }
 
 <div class="container mt-5">
@@ -16,7 +31,7 @@
         <a asp-controller="Battle" asp-action="Index" class="btn btn-secondary">← Back to All Battles</a>
     </div>
 
-    {{!-- ── Summary card ──────────────────────────────────────────── }}
+    {{!-- ── Summary card ─────────────────────────────────────────────────── }}
     <div class="card mb-4">
         <div class="card-header text-white" style="background-color: #b71c1c;">
             <h5 class="mb-0">
@@ -26,27 +41,22 @@
             </h5>
         </div>
         <div class="card-body">
-            <dl class="row">
+            <dl class="row mb-0">
                 <dt class="col-sm-3">Outcome</dt>
                 <dd class="col-sm-9">
                     <span class="badge bg-@GetOutcomeBadge(Model.Outcome) fs-6">@Model.Outcome</span>
                 </dd>
-
                 <dt class="col-sm-3">Turns Fought</dt>
                 <dd class="col-sm-9">@Model.TurnsPlayed / 15</dd>
-
-                <dt class="col-sm-3">Total Damage</dt>
+                <dt class="col-sm-3">Total Damage Dealt</dt>
                 <dd class="col-sm-9">@Model.DamageDealt.ToString("N0")</dd>
-
                 <dt class="col-sm-3">Started</dt>
                 <dd class="col-sm-9">@Model.StartTime.ToString("yyyy-MM-dd HH:mm") UTC</dd>
-
                 @if (Model.EndTime.HasValue)
                 {
                     <dt class="col-sm-3">Ended</dt>
                     <dd class="col-sm-9">@Model.EndTime.Value.ToString("yyyy-MM-dd HH:mm") UTC</dd>
                 }
-
                 @if (!string.IsNullOrEmpty(Model.Description))
                 {
                     <dt class="col-sm-3">Notes</dt>
@@ -56,51 +66,60 @@
         </div>
     </div>
 
-    {{!-- ── Combatant summaries ────────────────────────────────────── }}
+    @if (Model.Outcome == BattleOutcome.Draw)
+    {
+        <div class="alert alert-warning" role="alert">
+            ⚖️ <strong>@(Model.TurnsPlayed >= 15 ? "Stalemate — 15-turn limit reached." : "Mutual destruction — both sides wiped out simultaneously.")</strong>
+        </div>
+    }
+
+    {{!-- ── Pre-battle stats ──────────────────────────────────────────────── }}
     <div class="row mb-4">
         <div class="col-md-6">
-            <div class="card h-100">
+            <div class="card h-100 border-info">
                 <div class="card-header text-white" style="background-color: #1565c0;">
-                    <h6 class="mb-0">⚡ Attacking Fleet — @attackerName</h6>
+                    <h6 class="mb-0">⚡ Attacker — @attackerName</h6>
                 </div>
                 <div class="card-body">
-                    @if (Model.AttackingFleet?.Ships.Any() == true)
-                    {
-                        <p class="mb-1">Ships: <strong>@Model.AttackingFleet.Ships.Count</strong></p>
-                        <p class="mb-0">Attack Power: <strong>@Model.AttackingFleet.Ships.Sum(s => (int)s.Rarity * 100).ToString("N0")</strong></p>
-                    }
-                    else
-                    {
-                        <p class="text-muted mb-0">No ship data available.</p>
-                    }
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            <tr><td>Ships</td><td><strong>@(Model.AttackingFleet?.Ships.Count ?? 0)</strong></td></tr>
+                            <tr><td>Total Attack</td><td><strong class="text-danger">@attackPower.ToString("N0")</strong></td></tr>
+                            <tr><td>Total Defense</td><td><strong class="text-info">@attackerDef.ToString("N0")</strong></td></tr>
+                            <tr><td>Total HP</td><td><strong class="text-success">@attackerHp.ToString("N0")</strong></td></tr>
+                            <tr class="table-warning">
+                                <td>Net Damage/Turn</td>
+                                <td><strong>@effectiveDmg.ToString("N0")</strong> <small class="text-muted">(ATK @attackPower − DEF @defenderDef)</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card h-100">
+            <div class="card h-100 border-success">
                 <div class="card-header text-white" style="background-color: #2e7d32;">
-                    <h6 class="mb-0">🛡️ Defending Side — @defenderLabel</h6>
+                    <h6 class="mb-0">🛡️ Defenders — @defenderLabel</h6>
                 </div>
                 <div class="card-body">
-                    @if (Model.DefendingFleet?.Ships.Any() == true)
-                    {
-                        <p class="mb-1">Fleet Ships: <strong>@Model.DefendingFleet.Ships.Count</strong></p>
-                        <p class="mb-1">Fleet HP Pool: <strong>@Model.DefendingFleet.Ships.Sum(s => (int)s.Rarity * 100).ToString("N0")</strong></p>
-                    }
-                    <p class="mb-0">Station HP: <strong>@(Model.DefendingStation?.Health.ToString("N0") ?? "N/A")</strong></p>
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            <tr><td>Fleet Ships</td><td><strong>@(Model.DefendingFleet?.Ships.Count ?? 0)</strong></td></tr>
+                            <tr><td>Combined Attack</td><td><strong class="text-danger">@counterAttack.ToString("N0")</strong> <small class="text-muted">(fleet @defFleetAtk + station @stationAtk)</small></td></tr>
+                            <tr><td>Combined Defense</td><td><strong class="text-info">@defenderDef.ToString("N0")</strong> <small class="text-muted">(fleet @defFleetDef + station @stationDef)</small></td></tr>
+                            <tr><td>Combined HP</td><td><strong class="text-success">@defenderHp.ToString("N0")</strong> <small class="text-muted">(fleet @defFleetHp + station @stationHp)</small></td></tr>
+                            <tr class="table-warning">
+                                <td>Net Counter/Turn</td>
+                                <td><strong>@counterDmg.ToString("N0")</strong> <small class="text-muted">(ATK @counterAttack − DEF @attackerDef)</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    @if (Model.Outcome == BattleOutcome.Draw)
-    {
-        <div class="alert alert-warning" role="alert">
-            ⚖️ <strong>Draw declared</strong> — The battle reached the 15-turn limit without a decisive outcome.
-        </div>
-    }
-
-    {{!-- ── Turn-by-turn log ──────────────────────────────────────── }}
+    {{!-- ── Turn-by-Turn log ───────────────────────────────────────────────── }}
     <div class="card">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">📋 Turn-by-Turn Log</h5>
@@ -116,24 +135,42 @@
                     <table class="table table-striped table-hover mb-0">
                         <thead class="table-dark">
                             <tr>
-                                <th style="width:80px;">Turn</th>
-                                <th>Damage Dealt</th>
-                                <th>Defender HP Remaining</th>
-                                <th>Notes</th>
+                                <th style="width:70px">Turn</th>
+                                <th class="text-info">⚡ Dmg to Defenders</th>
+                                <th class="text-danger">🛡️ Counter to Attackers</th>
+                                <th class="text-info">Attacker HP</th>
+                                <th class="text-success">Defender HP</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var turn in Model.BattleTurns)
                             {
-                                <tr class="@(turn.DefenderRemainingHealth == 0 ? "table-danger" : "")">
+                                string rowClass = (turn.DefenderRemainingHealth == 0 && turn.AttackerRemainingHealth == 0) ? "table-warning"
+                                               : turn.DefenderRemainingHealth == 0 ? "table-success"
+                                               : turn.AttackerRemainingHealth == 0 ? "table-danger"
+                                               : "";
+                                <tr class="@rowClass">
                                     <td><strong>@turn.TurnNumber</strong></td>
-                                    <td>@turn.DamageDealt.ToString("N0")</td>
+                                    <td>
+                                        <span class="@(turn.DamageDealt == 0 ? "text-muted" : "text-info fw-bold")">
+                                            @turn.DamageDealt.ToString("N0")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="@(turn.CounterDamageDealt == 0 ? "text-muted" : "text-danger fw-bold")">
+                                            @turn.CounterDamageDealt.ToString("N0")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="@(turn.AttackerRemainingHealth == 0 ? "text-danger fw-bold" : "")">
+                                            @turn.AttackerRemainingHealth.ToString("N0")
+                                        </span>
+                                    </td>
                                     <td>
                                         <span class="@(turn.DefenderRemainingHealth == 0 ? "text-danger fw-bold" : "")">
                                             @turn.DefenderRemainingHealth.ToString("N0")
                                         </span>
                                     </td>
-                                    <td class="text-muted small">@turn.Notes</td>
                                 </tr>
                             }
                         </tbody>

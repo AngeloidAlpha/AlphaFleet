@@ -17,8 +17,16 @@ namespace AlphaFleet.Data.Models
         [Required]
         public int TurnNumber { get; set; }
 
+        // Attacker → Defender (net of defender's defense)
         [Required]
         public int DamageDealt { get; set; }
+
+        // Defender + Station → Attacker (net of attacker's defense)
+        [Required]
+        public int CounterDamageDealt { get; set; }
+
+        [Required]
+        public int AttackerRemainingHealth { get; set; }
 
         [Required]
         public int DefenderRemainingHealth { get; set; }

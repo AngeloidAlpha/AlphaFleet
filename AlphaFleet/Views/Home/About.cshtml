@@ -3,71 +3,140 @@
 }
 
 <div class="container mt-5">
-    <h1 class="mb-4">@ViewData["Title"]</h1>
+    <h1 class="mb-1">🚀 AlphaFleet</h1>
+    <p class="text-muted mb-4">A sci-fi fleet command and combat simulator built with .NET 10</p>
 
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row g-4">
+
+        {{!-- Left column --}}
+        <div class="col-lg-8">
+
             <div class="card mb-4">
-                <div class="card-body">
-                    <h4 class="card-title">🚀 What is AlphaFleet?</h4>
-                    <p class="card-text">
-                        AlphaFleet is a fleet management application where you can organize, browse, and explore
-                        starships across multiple fleets. Each ship has a unique class, hull type, rarity, and
-                        production year — making every fleet a carefully curated armada.
-                    </p>
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📋 Features</h5>
                 </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent">⚔️ <strong>Ship Management</strong> — Full Create / Edit / Delete for starships with detailed history</li>
+                    <li class="list-group-item bg-transparent">📊 <strong>Combat Stats</strong> — Attack, Defense &amp; Health auto-calculated from hull class × rarity multiplier</li>
+                    <li class="list-group-item bg-transparent">🎲 <strong>Gacha Rarity System</strong> — Dice-roll button assigns ship rarity with weighted probabilities</li>
+                    <li class="list-group-item bg-transparent">🚀 <strong>Fleet Browsing</strong> — View all fleets, their ships, and assigned admirals</li>
+                    <li class="list-group-item bg-transparent">⚓ <strong>Admiral Profiles</strong> — Ranks (Rear Admiral → Grand Admiral), bios and portraits</li>
+                    <li class="list-group-item bg-transparent">🏰 <strong>Station Network</strong> — Space stations with their own tiered Attack / Defense / Health stats</li>
+                    <li class="list-group-item bg-transparent">🌌 <strong>Faction System</strong> — Choose your allegiance: <span class="badge bg-primary">Earthlings</span> or <span class="badge bg-danger">Martians</span></li>
+                    <li class="list-group-item bg-transparent">⚔️ <strong>Turn-Based Battles</strong> — Fleets clash over max 15 turns; both sides fire simultaneously each turn</li>
+                    <li class="list-group-item bg-transparent">🛡️ <strong>Defense Mechanics</strong> — Net damage = Attack − Defense (clamped to 0); stations &amp; fleets counter-attack</li>
+                    <li class="list-group-item bg-transparent">📋 <strong>Battle Logs</strong> — Full turn-by-turn records with HP tracking for both sides</li>
+                    <li class="list-group-item bg-transparent">🔍 <strong>Search</strong> — Filter ships, fleets, stations and battles by name</li>
+                    <li class="list-group-item bg-transparent">🔒 <strong>Authentication</strong> — ASP.NET Core Identity; all pages require login</li>
+                    <li class="list-group-item bg-transparent">🌙 <strong>Dark Theme</strong> — Bootstrap 5.3 dark mode throughout</li>
+                </ul>
             </div>
 
             <div class="card mb-4">
-                <div class="card-body">
-                    <h4 class="card-title">⚙️ Features</h4>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item bg-transparent">📋 Browse and manage fleets and their ships</li>
-                        <li class="list-group-item bg-transparent">🔍 Search ships by name or class</li>
-                        <li class="list-group-item bg-transparent">🎲 Gacha system with rarity-based ship pulls</li>
-                        <li class="list-group-item bg-transparent">📊 Detailed ship and fleet views</li>
-                        <li class="list-group-item bg-transparent">🌙 Dark theme for comfortable viewing</li>
-                    </ul>
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📊 Combat Stats System</h5>
                 </div>
-            </div>
-
-            <div class="card mb-4">
                 <div class="card-body">
-                    <h4 class="card-title">🎯 Ship Rarities</h4>
-                    <p>Ships come in four rarity tiers, each with different drop rates:</p>
+                    <p class="text-muted">Base stats double every hull class tier. Rarity applies a multiplier on top.</p>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered text-center">
+                            <thead class="table-dark">
+                                <tr><th>Hull Class</th><th>Base Attack</th><th>Base Defense</th><th>Base Health</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Fighter</td><td>10</td><td>1</td><td>50</td></tr>
+                                <tr><td>Interceptor</td><td>20</td><td>2</td><td>100</td></tr>
+                                <tr><td>Corvette</td><td>40</td><td>4</td><td>200</td></tr>
+                                <tr><td>Frigate</td><td>80</td><td>8</td><td>400</td></tr>
+                                <tr><td>Destroyer</td><td>160</td><td>16</td><td>800</td></tr>
+                                <tr><td>Cruiser</td><td>320</td><td>32</td><td>1,600</td></tr>
+                                <tr><td>Heavy Cruiser</td><td>640</td><td>64</td><td>3,200</td></tr>
+                                <tr><td>Battlecruiser</td><td>1,280</td><td>128</td><td>6,400</td></tr>
+                                <tr><td>Capital Ship</td><td>2,560</td><td>256</td><td>12,800</td></tr>
+                                <tr><td>Aircraft Carrier</td><td>5,120</td><td>512</td><td>25,600</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-muted mb-2">Rarity multipliers:</p>
                     <div class="d-flex gap-2 flex-wrap">
-                        <span class="badge bg-secondary fs-6">Common — 70%</span>
-                        <span class="badge bg-info fs-6">Rare — 20%</span>
-                        <span class="badge bg-warning fs-6">Epic — 9%</span>
-                        <span class="badge bg-danger fs-6">Legendary — 1%</span>
+                        <span class="badge bg-secondary fs-6">Common ×1.10</span>
+                        <span class="badge bg-info fs-6">Rare ×1.20</span>
+                        <span class="badge bg-warning text-dark fs-6">Epic ×1.40</span>
+                        <span class="badge bg-danger fs-6">Legendary ×1.80</span>
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🎲 Gacha Drop Rates</h5>
+                </div>
+                <div class="card-body d-flex gap-3 flex-wrap">
+                    <span class="badge bg-secondary fs-6">Common — 70%</span>
+                    <span class="badge bg-info fs-6">Rare — 20%</span>
+                    <span class="badge bg-warning text-dark fs-6">Epic — 9%</span>
+                    <span class="badge bg-danger fs-6">Legendary — 1%</span>
+                </div>
+            </div>
+
         </div>
 
-        <div class="col-md-4">
+        {{!-- Right column --}}
+        <div class="col-lg-4">
+
             <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🛠️ Tech Stack</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent">🔷 .NET 10 / C# 14</li>
+                    <li class="list-group-item bg-transparent">🌐 ASP.NET Core MVC</li>
+                    <li class="list-group-item bg-transparent">🗄️ Entity Framework Core 10</li>
+                    <li class="list-group-item bg-transparent">🗃️ SQL Server LocalDB</li>
+                    <li class="list-group-item bg-transparent">🔒 ASP.NET Core Identity</li>
+                    <li class="list-group-item bg-transparent">🎨 Bootstrap 5.3 (dark)</li>
+                </ul>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🏗️ Architecture</h5>
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title">🛠️ Built With</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">🔷 .NET 10</li>
-                        <li class="mb-2">📄 ASP.NET Core Razor Pages</li>
-                        <li class="mb-2">🗄️ Entity Framework Core</li>
-                        <li class="mb-2">🗃️ SQL Server</li>
-                        <li class="mb-2">🎨 Bootstrap 5</li>
+                    <ul class="list-unstyled small mb-0">
+                        <li class="mb-1">📁 <code>AlphaFleet</code> — Web (Controllers, Views)</li>
+                        <li class="mb-1">📁 <code>AlphaFleet.Services</code> — Business logic</li>
+                        <li class="mb-1">📁 <code>AlphaFleet.ViewModels</code> — Form binding</li>
+                        <li class="mb-1">📁 <code>AlphaFleet.Data</code> — DbContext &amp; Migrations</li>
+                        <li class="mb-1">📁 <code>AlphaFleet.Data.Models</code> — Entities &amp; Enums</li>
+                        <li class="mb-0">📁 <code>AlphaFleet.Common</code> — Shared constants</li>
                     </ul>
                 </div>
             </div>
 
             <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🔮 Planned Features</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent small">⚔️ Ship destruction tracking mid-battle</li>
+                    <li class="list-group-item bg-transparent small">🚀 Multi-fleet battles (N vs N)</li>
+                    <li class="list-group-item bg-transparent small">🎯 Per-ship accuracy rolls &amp; crits</li>
+                    <li class="list-group-item bg-transparent small">🌌 Fleet ownership per user account</li>
+                </ul>
+            </div>
+
+            <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">📬 Source Code</h4>
-                    <p>This project is open source and available on GitHub.</p>
-                    <a href="https://github.com/AngeloidAlpha/AlphaFleet" target="_blank" class="btn btn-outline-primary w-100">
-                        View on GitHub
+                    <h5 class="card-title">📬 Source Code</h5>
+                    <p class="text-muted small">Open source and available on GitHub.</p>
+                    <a href="https://github.com/AngeloidAlpha/AlphaFleet" target="_blank"
+                       class="btn btn-outline-primary w-100">
+                        View on GitHub ↗
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
